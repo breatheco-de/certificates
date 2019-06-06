@@ -1,15 +1,16 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font } from '@react-pdf/renderer';
 import styled from "@react-pdf/styled-components";
 
 
 
+Font.register({ family: 'Bold', src: "https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap", fontStyle: 'normal', fontWeight: 'heavy'});
 
+class Certificate extends React.Component {
 
-
-
-const Certificate = props =>(
-  <PDFViewer height="1000px" width="1600px">
+  render(props) {
+    return (
+      <PDFViewer height="1000px" width="1600px">
         <Document>
             <Page {...props} size="A4" orientation="landscape" > 
             {/*Here is the first black row */}
@@ -103,7 +104,7 @@ const Certificate = props =>(
                   <View style={styles.secondColumn}>
                   <Image
                       style={styles.image}
-                      src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/400x/"
+                      src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/450x/"
                     />
                   </View>
                   <View style={styles.secondColumn}>
@@ -111,7 +112,7 @@ const Certificate = props =>(
                           <SignatureDash>
                             <Text>____________</Text>
                           </SignatureDash>
-                          <InstructorName><Text style={styles.development} >ALEJANDRO SANCHEZ</Text></InstructorName>
+                          <InstructorName><Text style={styles.bold} >ALEJANDRO SANCHEZ</Text></InstructorName>
                           <LeadInstructor> <Text>Co-founder and</Text></LeadInstructor>
                          <LeadInstructor><Text>Lead Instructor</Text></LeadInstructor>
                       </View>
@@ -120,7 +121,14 @@ const Certificate = props =>(
             </Page>
           </Document>
     </PDFViewer>
-);
+    )
+  }
+}
+
+
+
+
+
 
 const styles = StyleSheet.create({
   colorDash:{
@@ -236,21 +244,31 @@ const LastName = styled.Text`
   font-size:50px;
   color:black;
   margin-left:336px;
+  font-weight:900;
 `;
 const FullStackDevProgram = styled.Text`
-  text-align:center;
+font-size:10px;
+text-align:center;
+margin:2px 0px; 
 `;
 const SuccesComplete = styled.Text`
+  font-size:10px;
   text-align:center;
+  margin:2px 0px; 
 `;
 const Hours = styled.Text`
+  font-size:20px;
+  margin:3px 0px;
   text-align:center;
 `;
 const NameOfCohort = styled.Text`
+  font-size:10px;
   text-align:center;
 `;
 const GraduationDate = styled.Text`
   text-align:center;
+  margin:3px 0px;
+  font-size:10px
 `;
 
 
