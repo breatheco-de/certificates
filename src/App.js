@@ -335,6 +335,8 @@ const FirstName = styled.Text`
   font-size:50px;
   color:black;
   margin-left:230px;
+  margin-bottom:0px;
+  padding-bottom:0px;
 `;
 const LastName = styled.Text`
   font-size:50px;
