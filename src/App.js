@@ -1,126 +1,218 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font } from '@react-pdf/renderer';
 import styled from "@react-pdf/styled-components";
-
-
+import {  Notify } from "bc-react-notifier";
+import moment from "moment";
 
 Font.register({ family: 'Bold', src: "https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap", fontStyle: 'normal', fontWeight: 'heavy'});
 
+function getUrlParameter(name) {
+	var params = new URLSearchParams(window.location.search);
+	return params.has(name) ? params.get(name) : null;
+}
+
+const HOST = "https://talenttree-alesanchezr.c9users.io";
+
 class Certificate extends React.Component {
+  constructor(props) {
+		super(props);
+		this.state = {
+			cohort: getUrlParameter("cohort"),
+			token: getUrlParameter("access_token"),
+			student: getUrlParameter("student"),
+			isLoaded: false,
+			selectedCohort: null,
+			selectedStudent: null,
+			graduationDate: null,
+			nameOfCohort: null,
+			teachers: [],
+			studentFirstName: null,
+			studentStatus: null,
+			studentLastName: null
+		};
+	}
+
+	componentDidMount() {
+		console.log("v1.0");
+		if (this.state.cohort)
+			fetch(
+				HOST +
+					"/cohort/" +
+					this.state.cohort +
+					"?access_token=" +
+					this.state.token,
+				{ method: "GET" }
+			)
+				.then(res => res.json())
+				.then(json => {
+          let aux = json.data["full_teachers"].map(t => t.full_name);
+					this.setState({
+						isLoaded: true,
+						selectedCohort: json,
+						nameOfCohort: json.data.name,
+						graduationDate: json.data["ending_date"],
+						teachers: aux
+					});
+				})
+				.catch(err =>
+					Notify.error(err.message || "there was a problem")
+				);
+		if (this.state.student)
+			fetch(
+				HOST +
+					/student/ +
+					this.state.student +
+					"?access_token=" +
+					this.state.token
+			)
+				.then(res => res.json())
+				.then(json => {
+					this.setState({
+						isLoaded: true,
+						selectedStudent: json,
+						studentFirstName: json.data["first_name"],
+						studentLastName: json.data["last_name"],
+						studentStatus: json.data["status"]
+					});
+				})
+				.catch(err =>
+					Notify.error(err.message || "there was a problem")
+				);
+	}
+
 
   render(props) {
-    return (
+    let diploma=(
       <PDFViewer height="1000px" width="1600px">
-        <Document>
-            <Page {...props} size="A4" orientation="landscape" > 
-            {/*Here is the first black row */}
-                <View style={styles.firstRow}>
-                  <View style={styles.firstColumn}>
-                      <View style={styles.textCenter}>
-                          <FourGeeks>
-                            <Text>4GEEKS ACADEMY</Text>
-                          </FourGeeks>
-                          <CodingSchool>
-                            <Text style={styles.codingSchool} >CODING SCHOOL</Text>
-                          </CodingSchool>
-                      </View>
-                  </View>
-                  <View style={styles.secondColumn}>
-                  <Image
-                      style={styles.image}
-                      src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
-                    />
-                  </View>
-                  <View style={styles.secondColumn}>
-                      <View style={styles.textCenter}>
-                          <FullStack>
-                            <Text>FULL STACK</Text>
-                          </FullStack>
-                          <Development><Text style={styles.development} >DEVELOPMENT</Text></Development>
-                      </View>
-                  </View>
+      <Document>
+          <Page {...props} size="A4" orientation="landscape" > 
+          {/*Here is the first black row */}
+              <View style={styles.firstRow}>
+                <View style={styles.firstColumn}>
+                    <View style={styles.textCenter}>
+                        <FourGeeks>
+                          <Text>4GEEKS ACADEMY</Text>
+                        </FourGeeks>
+                        <CodingSchool>
+                          <Text style={styles.codingSchool} >CODING SCHOOL</Text>
+                        </CodingSchool>
+                    </View>
                 </View>
-              {/* Here starts the middle of the certificate */}
-                
-                  <View style={styles.secondRow}>
-                    <RecognizesThat>
-                      <Text >
-                        RECOGNIZES THAT
-                      </Text>
-                    </RecognizesThat>
-                    <FirstName>
-                      <Text>
-                      &lt;/NAILA
-                      </Text>
-                    </FirstName>
-                    <LastName>
-                      <Text>
-                        KALIYEVA/&gt;
-                      </Text>
-                    </LastName>
-                    <Text style={styles.colorDash}>
-                      _________________________________
+                <View style={styles.secondColumn}>
+                <Image
+                    style={styles.image}
+                    src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
+                  />
+                </View>
+                <View style={styles.secondColumn}>
+                    <View style={styles.textCenter}>
+                        <FullStack>
+                          <Text>FULL STACK</Text>
+                        </FullStack>
+                        <Development><Text style={styles.development} >DEVELOPMENT</Text></Development>
+                    </View>
+                </View>
+              </View>
+            {/* Here starts the middle of the certificate */}
+              
+                <View style={styles.secondRow}>
+                  <RecognizesThat>
+                    <Text >
+                      RECOGNIZES THAT
                     </Text>
-                    <SuccesComplete>
-                      <Text>
-                        HAS SUCCESFULLY COMPLETED  
-                      </Text>
-                    </SuccesComplete>
-                    <FullStackDevProgram>
-                      <Text>
-                      THE FULL STACK DEVELOPMENT PROGRAM
-                      </Text>
-                    </FullStackDevProgram>
-                    <Hours>
-                      <Text>
-                      320+HOURS
-                      </Text>
-                    </Hours>
-                    <NameOfCohort>
+                  </RecognizesThat>
+                  <FirstName>
                     <Text>
-                    NAME OF COHORT 
+                    &lt;/{this.state.studentFirstName
+                  ? this.state.studentFirstName
+                  : "loading"}
                     </Text>
-                    </NameOfCohort>
-                    <GraduationDate>
-                      <Text>
-                      GRADUATION DATE 
-                      </Text>
-                    </GraduationDate>
-                  </View>
-                
-                {/*this is the last row of the certificate*/}
-                <View style={styles.thirdRow}>
-                  <View style={styles.firstColumn}>
-                  <View style={styles.textCenter}>
-                          <SignatureDash>
-                            <Text>____________</Text>
-                          </SignatureDash>
-                          <InstructorName>
-                            <Text style={styles.development} >ALEJANDRO SANCHEZ</Text>
-                          </InstructorName>
-                          <LeadInstructor><Text style={styles.development} >Lead Instructor</Text></LeadInstructor>
-                      </View>
-                  </View>
-                  <View style={styles.secondColumn}>
-                  <Image
-                      style={styles.image}
-                      src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/450x/"
-                    />
-                  </View>
-                  <View style={styles.secondColumn}>
-                      <View style={styles.textCenter}>
-                          <SignatureDash>
-                            <Text>____________</Text>
-                          </SignatureDash>
-                          <InstructorName><Text style={styles.bold} >ALEJANDRO SANCHEZ</Text></InstructorName>
-                          <LeadInstructor> <Text>Co-founder and</Text></LeadInstructor>
-                         <LeadInstructor><Text>Lead Instructor</Text></LeadInstructor>
-                      </View>
-                  </View>
+                  </FirstName>
+                  <LastName>
+                    <Text>
+                    {this.state.studentLastName
+                  ? this.state.studentLastName
+                  : "loading"}&gt;
+                    </Text>
+                  </LastName>
+                  <Text style={styles.colorDash}>
+                    _________________________________
+                  </Text>
+                  <SuccesComplete>
+                    <Text>
+                      HAS SUCCESFULLY COMPLETED  
+                    </Text>
+                  </SuccesComplete>
+                  <FullStackDevProgram>
+                    <Text>
+                    THE FULL STACK DEVELOPMENT PROGRAM
+                    </Text>
+                  </FullStackDevProgram>
+                  <Hours>
+                    <Text>
+                    320+HOURS
+                    </Text>
+                  </Hours>
+                  <NameOfCohort>
+                  <Text>
+                  {this.state.nameOfCohort}
+                  </Text>
+                  </NameOfCohort>
+                  <GraduationDate>
+                    <Text>
+                    {moment(this.state.graduationDate).format(
+                      "MMMM Do YYYY"
+                  )} 
+                    </Text>
+                  </GraduationDate>
                 </View>
-            </Page>
-          </Document>
-    </PDFViewer>
+              
+              {/*this is the last row of the certificate*/}
+              <View style={styles.thirdRow}>
+                <View style={styles.firstColumn}>
+                <View style={styles.textCenter}>
+                        <SignatureDash>
+                          <Text>___________________</Text>
+                        </SignatureDash>
+                        <InstructorName>
+                          <Text style={styles.development} >{this.state.teachers[1]}</Text>
+                        </InstructorName>
+                        <LeadInstructor><Text style={styles.development} >Lead Instructor</Text></LeadInstructor>
+                    </View>
+                </View>
+                <View style={styles.secondColumn}>
+                <Image
+                    style={styles.image}
+                    src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
+                  />
+                </View>
+                <View style={styles.secondColumn}>
+                    <View style={styles.textCenter}>
+                        <SignatureDash>
+                          <Text>___________________</Text>
+                        </SignatureDash>
+                        <InstructorName><Text style={styles.bold} >ALEJANDRO SANCHEZ</Text></InstructorName>
+                        <LeadInstructor> <Text>Co-founder and</Text></LeadInstructor>
+                       <LeadInstructor><Text>Lead Instructor</Text></LeadInstructor>
+                    </View>
+                </View>
+              </View>
+          </Page>
+        </Document>
+  </PDFViewer>
+    );
+    let error = (
+			<div className="display-1 text-center">
+				<span className="text-danger">404</span> student has not
+				graduated
+			</div>);
+    return (
+      <div>
+      {diploma}
+      	{/*this.state.studentStatus == "studies_finished"
+					? diploma
+					: error*/}
+      </div>
     )
   }
 }
@@ -134,6 +226,9 @@ const styles = StyleSheet.create({
   colorDash:{
     color:"#44B2E4",
     textAlign:"center",
+    marginTop:"0px",
+    paddingTop:"0px"
+  
     
   },
   textCenter:{
@@ -210,7 +305,7 @@ const Development = styled.Text`
     
 `;
 const InstructorName = styled.Text`
-  font-size:10px;
+  font-size:13px;
   font-weight: bold;
   text-align:center;
   color:black;
@@ -220,6 +315,7 @@ const SignatureDash = styled.Text`
   font-weight: bold;
   text-align:center;
   color:black;
+  margin-bottom:4px;
 `;
 const LeadInstructor = styled.Text`
   font-size:10px;
@@ -245,6 +341,8 @@ const LastName = styled.Text`
   color:black;
   margin-left:336px;
   font-weight:900;
+  margin-bottom:0px;
+  padding-bottom:0px;
 `;
 const FullStackDevProgram = styled.Text`
 font-size:10px;
