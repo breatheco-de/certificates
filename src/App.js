@@ -4,7 +4,7 @@ import styled from "@react-pdf/styled-components";
 import {  Notify } from "bc-react-notifier";
 import moment from "moment";
 
-Font.register({ family: 'Bold', src: "https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap", fontStyle: 'normal', fontWeight: 'heavy'});
+
 
 function getUrlParameter(name) {
 	var params = new URLSearchParams(window.location.search);
@@ -117,19 +117,19 @@ class Certificate extends React.Component {
               
                 <View style={styles.secondRow}>
                   <RecognizesThat>
-                    <Text >
+                    <Text style={styles.recognizes} >
                       RECOGNIZES THAT
                     </Text>
                   </RecognizesThat>
                   <FirstName>
-                    <Text>
+                    <Text style={styles.first_name}>
                     &lt;/{this.state.studentFirstName
                   ? this.state.studentFirstName
                   : "loading"}
                     </Text>
                   </FirstName>
                   <LastName>
-                    <Text>
+                    <Text style={styles.last_name}>
                     {this.state.studentLastName
                   ? this.state.studentLastName
                   : "loading"}&gt;
@@ -175,7 +175,7 @@ class Certificate extends React.Component {
                           <Text>___________________</Text>
                         </SignatureDash>
                         <InstructorName>
-                          <Text style={styles.development} >{this.state.teachers[1]}</Text>
+                          <Text style={styles.bold} >{this.state.teachers[1]}</Text>
                         </InstructorName>
                         <LeadInstructor><Text style={styles.development} >Lead Instructor</Text></LeadInstructor>
                     </View>
@@ -223,6 +223,27 @@ class Certificate extends React.Component {
 
 
 const styles = StyleSheet.create({
+  first_name:{
+    fontFamily:"Helvetica",
+    fontWeight:"100",
+
+   
+
+  },
+  last_name:{
+    fontFamily:"Helvetica-Bold",
+    fontWeight:"heavy",
+
+  },
+  recognizes:{
+    fontFamily:"Helvetica-Bold",
+    fontWeight:"500"
+
+  },
+  bold:{
+    fontFamily:"Helvetica-Bold",
+    
+  },
   colorDash:{
     color:"#44B2E4",
     textAlign:"center",
@@ -332,6 +353,7 @@ const RecognizesThat = styled.Text`
   color:#44B2E4;
 `;
 const FirstName = styled.Text`
+  font-weight:100
   font-size:50px;
   color:black;
   margin-left:230px;
@@ -347,25 +369,31 @@ const LastName = styled.Text`
   padding-bottom:0px;
 `;
 const FullStackDevProgram = styled.Text`
+font-family:Helvetica-Bold
 font-size:10px;
 text-align:center;
 margin:2px 0px; 
 `;
 const SuccesComplete = styled.Text`
+font-family:Helvetica-Bold
   font-size:10px;
   text-align:center;
   margin:2px 0px; 
 `;
 const Hours = styled.Text`
+  
+  font-family:Helvetica-Bold
   font-size:20px;
   margin:3px 0px;
   text-align:center;
 `;
 const NameOfCohort = styled.Text`
+font-family:Helvetica-Bold
   font-size:10px;
   text-align:center;
 `;
 const GraduationDate = styled.Text`
+  font-family:Helvetica-Bold
   text-align:center;
   margin:3px 0px;
   font-size:10px
