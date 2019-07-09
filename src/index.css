@@ -11,3 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.bcnotifier{ margin: 0; padding: 0; text-align: center; background: #ffb8b8; }
+.bcnotifier li{ list-style: none; padding: 10px;}
