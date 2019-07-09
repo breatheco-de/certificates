@@ -13,46 +13,31 @@ class Certificate extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			cohort: getUrlParameter("cohort"),
+			cohort_id: getUrlParameter("cohort"),
 			token: getUrlParameter("access_token"),
-			student: getUrlParameter("student"),
-			isLoaded: false,
-			selectedCohort: null,
-			selectedStudent: null,
-			graduationDate: null,
-			nameOfCohort: null,
-			teachers: [],
-			studentFirstName: null,
-			studentStatus: null,
-			studentLastName: null
+			student_id: getUrlParameter("student"),
+			cohort: null,
+			student: null
 		};
 	}
 
 	componentDidMount() {
-		if (this.state.cohort && this.state.student && this.state.token){
-			fetch(`${HOST}/cohort/${this.state.cohort}?access_token=${this.state.token}`)
+		if (this.state.cohort_id && this.state.student_id && this.state.token){
+			fetch(`${HOST}/cohort/${this.state.cohort_id}?access_token=${this.state.token}`)
 				.then(res => res.json())
 				.then(json => {
 					this.setState({
-						isLoaded: true,
-						selectedCohort: json,
-						nameOfCohort: json.data.name,
-						graduationDate: json.data["ending_date"],
-						teachers: json.data["full_teachers"].map(t => t.full_name)
+						cohort: json.data
 					});
 				})
 				.catch(err =>
 					Notify.error(err.message || "there was a problem")
 				);
-			fetch(`${HOST}/student/${this.state.student}?access_token=${this.state.token}`)
+			fetch(`${HOST}/student/${this.state.student_id}?access_token=${this.state.token}`)
 				.then(res => res.json())
 				.then(json => {
 					this.setState({
-						isLoaded: true,
-						selectedStudent: json,
-						studentFirstName: json.data["first_name"],
-						studentLastName: json.data["last_name"],
-						studentStatus: json.data["status"]
+						student: json.data
 					});
 				})
 				.catch(err =>
@@ -66,12 +51,14 @@ class Certificate extends React.Component {
     return (
       <div>
         <Notifier />
-      	{this.state.studentStatus == "studies_finished" ?
-            <Diploma />
-            :
-            <ul className="bcnotifier">
-                <li>404 student has not graduated</li>
-            </ul>
+        {!this.state.student ? null :
+            this.state.student.status == "studies_finished" ?
+                <Diploma student={this.state.student} cohort={this.state.cohort} />
+                :
+                <ul className="bcnotifier">
+                    <li>404 student has not graduated</li>
+                </ul>
+
         }
       </div>
     )

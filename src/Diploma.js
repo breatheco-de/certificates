@@ -44,15 +44,15 @@ export const Diploma = (props) =>
                   </RecognizesThat>
                   <FirstName>
                     <Text style={styles.first_name}>
-                    &lt;/{this.state.studentFirstName
-                  ? this.state.studentFirstName
+                    &lt;/{props.student
+                  ? props.student.first_name
                   : "loading"}
                     </Text>
                   </FirstName>
                   <LastName>
                     <Text style={styles.last_name}>
-                    {this.state.studentLastName
-                  ? this.state.studentLastName
+                    { props.student
+                  ? props.student.last_name
                   : "loading"}&gt;
                     </Text>
                   </LastName>
@@ -76,12 +76,12 @@ export const Diploma = (props) =>
                   </Hours>
                   <NameOfCohort>
                   <Text>
-                  {this.state.nameOfCohort}
+                  {props.cohort.name}
                   </Text>
                   </NameOfCohort>
                   <GraduationDate>
                     <Text>
-                    {moment(this.state.graduationDate).format(
+                    {moment(props.cohort.ending_date).format(
                       "MMMM Do YYYY"
                   )}
                     </Text>
@@ -96,7 +96,7 @@ export const Diploma = (props) =>
                           <Text>___________________</Text>
                         </SignatureDash>
                         <InstructorName>
-                          <Text style={styles.bold} >{this.state.teachers[1]}</Text>
+                          <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
                         </InstructorName>
                         <LeadInstructor><Text style={styles.development} >Lead Instructor</Text></LeadInstructor>
                     </View>
