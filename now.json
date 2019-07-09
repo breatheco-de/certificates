@@ -10,7 +10,9 @@
       "config": { "distDir": "public" }
     }
   ],
-
+  "env": {
+    "PUBLIC_URL": "/"
+  },
   "routes": [
       {
         "src":"/(.*).ico",
