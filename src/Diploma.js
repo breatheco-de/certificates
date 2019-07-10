@@ -1,10 +1,15 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
 import moment from "moment";
 import styled from "@react-pdf/styled-components";
+import Spinner from 'react-spinner-material';
 
-export const Diploma = (props) =>
-      <PDFViewer height="1000px" width="1600px">
+export const Diploma = (props) => (!props.cohort || !props.student) ?
+    <div className="loading">
+        <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
+    </div>
+    :
+    <PDFViewer height="1000px" width="1600px">
       <Document>
           <Page {...props} size="A4" orientation="landscape" >
           {/*Here is the first black row */}
@@ -44,16 +49,12 @@ export const Diploma = (props) =>
                   </RecognizesThat>
                   <FirstName>
                     <Text style={styles.first_name}>
-                    &lt;/{props.student
-                  ? props.student.first_name
-                  : "loading"}
+                    &lt;/{props.student.first_name}
                     </Text>
                   </FirstName>
                   <LastName>
                     <Text style={styles.last_name}>
-                    { props.student
-                  ? props.student.last_name
-                  : "loading"}&gt;
+                    { props.student.last_name}&gt;
                     </Text>
                   </LastName>
                   <Text style={styles.colorDash}>
@@ -66,12 +67,12 @@ export const Diploma = (props) =>
                   </SuccesComplete>
                   <FullStackDevProgram>
                     <Text>
-                    THE FULL STACK DEVELOPMENT PROGRAM
+                    {props.cohort.profile.name.toUpperCase()} PROGRAM
                     </Text>
                   </FullStackDevProgram>
                   <Hours>
                     <Text>
-                    320+HOURS
+                    {props.cohort.profile.duration_in_hours}+HOURS
                     </Text>
                   </Hours>
                   <NameOfCohort>
@@ -81,9 +82,7 @@ export const Diploma = (props) =>
                   </NameOfCohort>
                   <GraduationDate>
                     <Text>
-                    {moment(props.cohort.ending_date).format(
-                      "MMMM Do YYYY"
-                  )}
+                    {moment(props.cohort.ending_date).format("MMMM Do YYYY")}
                     </Text>
                   </GraduationDate>
                 </View>
@@ -96,7 +95,7 @@ export const Diploma = (props) =>
                           <Text>___________________</Text>
                         </SignatureDash>
                         <InstructorName>
-                          <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
+                          <Text style={styles.bold} >{props.cohort.full_teachers[0].full_name}</Text>
                         </InstructorName>
                         <LeadInstructor><Text style={styles.development} >Lead Instructor</Text></LeadInstructor>
                     </View>

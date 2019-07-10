@@ -25,11 +25,19 @@ class Certificate extends React.Component {
 		if (this.state.cohort_id && this.state.student_id && this.state.token){
 			fetch(`${HOST}/cohort/${this.state.cohort_id}?access_token=${this.state.token}`)
 				.then(res => res.json())
-				.then(json => {
-					this.setState({
-						cohort: json.data
-					});
+				.then(cohort => {
+					return new Promise((resolve, reject) =>
+                        fetch(`${HOST}/profile/${cohort.data.profile_slug}?access_token=${this.state.token}`)
+                            .then(res => res.json())
+                            .then(profile => {
+                                console.log(profile);
+                                cohort.data.profile = profile.data;
+                                resolve(cohort.data)
+                            })
+                            .catch(err => reject(err))
+                    );
 				})
+                .then(cohort => this.setState({ cohort }))
 				.catch(err =>
 					Notify.error(err.message || "there was a problem")
 				);
@@ -52,7 +60,7 @@ class Certificate extends React.Component {
       <div>
         <Notifier />
         {!this.state.student ? null :
-            this.state.student.status == "studies_finished" ?
+            this.state.student.status === "studies_finished" ?
                 <Diploma student={this.state.student} cohort={this.state.cohort} />
                 :
                 <ul className="bcnotifier">

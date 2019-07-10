@@ -14,3 +14,9 @@ code {
 
 .bcnotifier{ margin: 0; padding: 0; text-align: center; background: #ffb8b8; }
 .bcnotifier li{ list-style: none; padding: 10px;}
+.loading{
+    margin: auto;
+    width: 120px;
+    transform: translateY(-50%);
+    margin-top: 50vh;
+}

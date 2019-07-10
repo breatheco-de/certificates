@@ -1,5 +1,8 @@
 ports:
     - port: 3000
 tasks:
-    - init: npm install;
+    - name: "Main"
+      init: npm install;
       command: npm run start;
+    - name: "Other installations"
+      init: npm i now -g;
