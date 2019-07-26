@@ -17,7 +17,8 @@ class Certificate extends React.Component {
 			token: getUrlParameter("access_token"),
 			student_id: getUrlParameter("student"),
 			cohort: null,
-			student: null
+			student: null,
+      certStyle: ""
 		};
 	}
 
@@ -57,20 +58,48 @@ class Certificate extends React.Component {
 
   render(props) {
     return (
-      <div>
-        <Notifier />
-        {!this.state.student ? null :
-            this.state.student.status === "studies_finished" ?
-                <Diploma student={this.state.student} cohort={this.state.cohort} />
-                :
-                <ul className="bcnotifier">
-                    <li>404 student has not graduated</li>
-                </ul>
+      <React.Fragment>
+        <div>
+          <Notifier />
 
-        }
-      </div>
+
+          {!this.state.student ? null :
+              this.state.student.status === "studies_finished"
+                  ?   ( !this.state.certStyle
+                      ? (<div className="container">
+                          <div className="row text-center">
+                            <div className="col">
+                              <h2>Select a certificate style</h2>
+                            </div>
+                          </div>
+                          <div className="row justify-content-center">
+                            <div className="col text-right">
+                            <button className="btn btn-danger" onClick={() => this.setState({ certStyle: "default" })}>Default</button>
+                            </div>
+                            <div className="col folat-left">
+                            <button className="btn btn-info" onClick={() => this.setState({ certStyle: "new" })}>Modern</button>
+                            </div>
+                          </div>
+                        </div>)
+                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />)
+                      )
+
+
+
+                  :
+                  <ul className="bcnotifier">
+                      <li>404 student has not graduated</li>
+                  </ul>
+
+          }
+        </div>
+
+      </React.Fragment>
     )
   }
 }
 
 export default Certificate ;
+
+
+// <Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />
