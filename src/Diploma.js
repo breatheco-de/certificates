@@ -3,19 +3,21 @@ import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react
 import moment from "moment";
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
+import {  Notify, Notifier } from "bc-react-notifier";
 
 let studentNameMarginLeft = "250px";
 let studentNamePaddingTop = "0px";
 export const Diploma = (props) => {
     const first = props.student.first_name;
+    const certSt = props.certStyle
     const last = props.student.last_name;
     const student = props.student;
     return((!props.cohort || !props.student) ?
     <div className="loading">
         <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
     </div>
-    :
-    <PDFViewer height="1000px" width="1620px">
+    : (certSt === "default"
+      ? (<PDFViewer height="1000px" width="1620px">
         <Document>
             <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 
@@ -202,7 +204,213 @@ export const Diploma = (props) => {
                 </View>
             </Page>
         </Document>
-    </PDFViewer>)};
+    </PDFViewer>)
+    :(certSt === "modern"
+      ? (
+      <PDFViewer height="1000px" width="1620px">
+        <Document>
+            <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
+
+                {/*Here is the first white row */}
+
+                <View style={styles.printTopRow}>
+                    <View style={styles.printTopRowColumnLeft}>
+                        <FourCornersTopLeft>
+                            <Text></Text>
+                        </FourCornersTopLeft>
+                    </View>
+                    <View style={styles.printTopRowColumnCenter}></View>
+                    <View style={styles.printTopRowColumnRight}>
+                        <FourCornersTopRight>
+                            <Text></Text>
+                        </FourCornersTopRight>
+                    </View>
+                </View>
+
+                {/*Here is the first black row */}
+
+                <View style={styles.firstRow}>
+                    <View style={styles.printTopRowColumnLeft}></View>
+                    <View style={styles.firstColumn}>
+                        <View style={styles.textCenter}>
+                            <FourGeeks>
+                                <Text>4GEEKS ACADEMY</Text>
+                            </FourGeeks>
+                            <CodingSchool>
+                                <Text style={styles.codingSchool} >NEW STYLE</Text>
+                            </CodingSchool>
+                        </View>
+                    </View>
+                    <View style={styles.secondColumn}>
+                        <Image
+                            style={styles.image}
+                            src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
+                        />
+                    </View>
+                    <View style={styles.thirdColumn}>
+                        <View style={styles.textLeft}>
+                            <FullStack>
+                                <Text>FULL STACK</Text>
+                            </FullStack>
+                            <Development>
+                                <Text style={styles.development} >DEVELOPMENT</Text>
+                            </Development>
+                        </View>
+                    </View>
+                    <View style={styles.printTopRowColumnRight}></View>
+                </View>
+
+                {/* Here starts the middle of the certificate */}
+
+                <View style={styles.secondRow}>
+                    <View style={styles.printTopRowColumnLeft}></View>
+                    <View style={styles.printSecondRowColumnCenter}>
+                        <RecognizesThat>
+                            <Text style={styles.recognizes} >
+                                RECOGNIZES THAT
+                            </Text>
+                        </RecognizesThat>
+                        {
+                        (student
+                            ?   (first && last
+                                ?   (first.length < 6 && last.length < 6
+                                    ?   (<View><FirstNameShortVersion>
+                                            <Text style={styles.first_name}>&lt;/{first}</Text>
+                                        </FirstNameShortVersion>
+                                        <LastNameShortVersion >
+                                            <Text style={styles.last_name}>{last}&gt;</Text>
+                                        </LastNameShortVersion>
+                                        </View>)
+                                    : ((<View><FirstName>
+                                            <Text style={styles.first_name}>&lt;/{first}</Text>
+                                        </FirstName>
+                                        <LastName>
+                                            <Text style={styles.last_name}>{last}&gt;</Text>
+                                        </LastName>
+                                        </View>)
+                                        ))
+                                :   (first
+
+                                    ?   (<SingleNameVersion>
+                                            <Text style={styles.first_name}>&lt;/{first}&gt;</Text>
+                                        </SingleNameVersion>)
+
+                                    :   (<SingleNameVersion>
+                                            <Text style={styles.last_name}>&lt;/{last}&gt;</Text>
+                                        </SingleNameVersion>)
+
+                                    )
+                                )
+                            : "Loading"
+                        )}
+
+                        <Text style={styles.colorDash}>
+                            _________________________________
+                        </Text>
+                        <SuccesComplete>
+                            <Text>
+                                HAS SUCCESSFULLY COMPLETED
+                            </Text>
+                        </SuccesComplete>
+                        <FullStackDevProgram>
+                            <Text>
+                                THE FULL STACK DEVELOPMENT PROGRAM
+                            </Text>
+                        </FullStackDevProgram>
+                        <Hours>
+                            <Text>
+                                320+HOURS
+                            </Text>
+                        </Hours>
+                        <NameOfCohort>
+                            <Text>
+                                {props.cohort.name}
+                            </Text>
+                        </NameOfCohort>
+                        <GraduationDate>
+                            <Text>
+                                {moment(props.cohort.ending_date).format(
+                                    "MMMM Do YYYY"
+                                )}
+                            </Text>
+                        </GraduationDate>
+                    </View>
+                    <View style={styles.printTopRowColumnRight}></View>
+                </View>
+
+                {/*this is the last row of the certificate*/}
+
+                <View style={styles.thirdRow}>
+                    <View style={styles.printTopRowColumnLeft}></View>
+                        <View style={styles.firstColumn}>
+                            <View style={styles.textCenter}>
+                                <SignatureDash>
+                                    <Text>___________________</Text>
+                                </SignatureDash>
+                                <InstructorName>
+                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
+                                </InstructorName>
+                                <LeadInstructor>
+                                    <Text style={styles.development} >Lead Instructor</Text>
+                                </LeadInstructor>
+                            </View>
+                        </View>
+                        <View style={styles.secondColumn}>
+                            <Image
+                                style={styles.image}
+                                src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
+                            />
+                        </View>
+                        <View style={styles.thirdColumn}>
+                            <View style={styles.textLeft}>
+                                <SignatureDash>
+                                    <Text>___________________</Text>
+                                </SignatureDash>
+                                <InstructorName>
+                                    <Text style={styles.bold} >ALEJANDRO SANCHEZ</Text>
+                                </InstructorName>
+                                <LeadInstructor>
+                                    <Text>Co-founder and</Text>
+                                </LeadInstructor>
+                                <LeadInstructor>
+                                    <Text>Lead Instructor</Text>
+                                </LeadInstructor>
+                            </View>
+                        </View>
+                    <View style={styles.printTopRowColumnRight}></View>
+              </View>
+              <View style={styles.printBottomRow}>
+                    <View style={styles.printTopRowColumnLeft}>
+                        <FourCornersBottomLeft>
+                            <Text></Text>
+                        </FourCornersBottomLeft>
+                    </View>
+                    <View style={styles.printTopRowColumnCenter}></View>
+                    <View style={styles.printTopRowColumnRight}>
+                        <FourCornersBottomRight>
+                            <Text></Text>
+                        </FourCornersBottomRight>
+                    </View>
+                </View>
+            </Page>
+        </Document>
+    </PDFViewer>
+    ):(<div className="container">
+        <Notifier />
+        <ul className="bcnotifier">
+                      <li>The style has to be either <b>default</b> or <b>modern</b></li>
+                  </ul>
+
+    </div>))
+
+    )
+
+
+    )
+
+
+    }
+
 
   const styles = StyleSheet.create({
 first_name:{
@@ -250,6 +458,16 @@ firstRow:{
     height:"150px",
     width: "100%"
 },
+// firstRowModern:{
+//     display:"flex",
+//     flexDirection: "row",
+//     flexWrap: "wrap",
+//     backgroundColor: "green",
+//     height:"150px",
+//     width: "100%",
+//     borderBottomLeftRadius: "25px"
+
+// },
 secondRow:{
     // padding: "5px",
     display:"flex",
