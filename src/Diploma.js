@@ -3,7 +3,7 @@ import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react
 import moment from "moment";
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
-import {  Notify, Notifier } from "bc-react-notifier";
+import { Notifier } from "bc-react-notifier";
 
 let studentNameMarginLeft = "250px";
 let studentNamePaddingTop = "0px";
