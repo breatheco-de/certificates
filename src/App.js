@@ -18,11 +18,12 @@ class Certificate extends React.Component {
 			student_id: getUrlParameter("student"),
 			cohort: null,
 			student: null,
-      certStyle: ""
+      certStyle: getUrlParameter("style")
 		};
 	}
 
 	componentDidMount() {
+
 		if (this.state.cohort_id && this.state.student_id && this.state.token){
 			fetch(`${HOST}/cohort/${this.state.cohort_id}?access_token=${this.state.token}`)
 				.then(res => res.json())
@@ -66,21 +67,9 @@ class Certificate extends React.Component {
           {!this.state.student ? null :
               this.state.student.status === "studies_finished"
                   ?   ( !this.state.certStyle
-                      ? (<div className="container">
-                          <div className="row text-center">
-                            <div className="col">
-                              <h2>Select a certificate style</h2>
-                            </div>
-                          </div>
-                          <div className="row justify-content-center">
-                            <div className="col text-right">
-                            <button className="btn btn-danger" onClick={() => this.setState({ certStyle: "default" })}>Default</button>
-                            </div>
-                            <div className="col folat-left">
-                            <button className="btn btn-info" onClick={() => this.setState({ certStyle: "new" })}>Modern</button>
-                            </div>
-                          </div>
-                        </div>)
+                      ? (<ul className="bcnotifier">
+                      <li>Please select a diploma style!</li>
+                  </ul>)
                       : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />)
                       )
 
