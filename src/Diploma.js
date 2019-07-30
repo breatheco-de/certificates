@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer, Image } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Canvas } from '@react-pdf/renderer';
 import moment from "moment";
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
@@ -258,11 +258,24 @@ export const Diploma = (props) => {
                         </View>
                     </View>
                     <View style={styles.printTopRowColumnRight}></View>
+
                 </View>
+
+                <View style={styles.roundedRowModern}>
+                  <View style={styles.printTopRowColumnLeft}></View>
+                    <View style={styles.printTopRowColumnCenter}>
+                      <Canvas style={styles.square} paint={
+                        (j)=>{j.path('M 0 0 C 200 100 550 100 810 0 Z').fill("black").stroke('black')}}>
+                      </Canvas>
+                    </View>
+                  <View style={styles.printTopRowColumnRight}></View>
+                </View>
+
+
 
                 {/* Here starts the middle of the certificate */}
 
-                <View style={styles.secondRow}>
+                <View style={styles.secondRowModern}>
                     <View style={styles.printTopRowColumnLeft}></View>
                     <View style={styles.printSecondRowColumnCenter}>
                         <RecognizesThat>
@@ -340,9 +353,9 @@ export const Diploma = (props) => {
 
                 {/*this is the last row of the certificate*/}
 
-                <View style={styles.thirdRow}>
+                <View style={styles.thirdRowModern}>
                     <View style={styles.printTopRowColumnLeft}></View>
-                        <View style={styles.firstColumn}>
+                        <View style={styles.thirdRowFirstColumnModern}>
                             <View style={styles.textCenter}>
                                 <SignatureDash>
                                     <Text>___________________</Text>
@@ -355,13 +368,13 @@ export const Diploma = (props) => {
                                 </LeadInstructor>
                             </View>
                         </View>
-                        <View style={styles.secondColumn}>
+                        <View style={styles.thirdRowSecondColumnModern}>
                             <Image
                                 style={styles.image}
                                 src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
                             />
                         </View>
-                        <View style={styles.thirdColumn}>
+                        <View style={styles.thirdRowThirdColumnModern}>
                             <View style={styles.textLeft}>
                                 <SignatureDash>
                                     <Text>___________________</Text>
@@ -412,11 +425,16 @@ export const Diploma = (props) => {
     }
 
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 first_name:{
     fontFamily:"Helvetica",
     fontWeight:"100",
 },
+square:{
+    height: '100px',
+    width: '100%'
+
+  },
 
 last_name:{
     fontFamily:"Helvetica-Bold",
@@ -458,22 +476,37 @@ firstRow:{
     height:"150px",
     width: "100%"
 },
-// firstRowModern:{
-//     display:"flex",
-//     flexDirection: "row",
-//     flexWrap: "wrap",
-//     backgroundColor: "green",
-//     height:"150px",
-//     width: "100%",
-//     borderBottomLeftRadius: "25px"
-
-// },
+roundedRowModern:{
+    display:"flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    height:"75px",
+    width: "100%"
+},
+secondRowModern:{
+    // padding: "5px",
+    display:"flex",
+    flexDirection: "row",
+    height:"225px"
+},
 secondRow:{
     // padding: "5px",
     display:"flex",
     flexDirection: "row",
     height:"290px"
 },
+thirdRowFirstColumnModern:{
+    width:"31%",
+    display:"flex",
+    flexDirection: "column"
+},
+thirdRowSecondColumnModern:{
+    width:"34%"
+},
+thirdRowThirdColumnModern:{
+    width:"31%"
+},
+
 firstColumn:{
     width:"31%",
     display:"flex",
@@ -495,6 +528,11 @@ thirdRow:{
     display:"flex",
     flexDirection: "row",
     height:"125px"
+},
+thirdRowModern:{
+    display:"flex",
+    flexDirection: "row",
+    height:"115px"
 },
 printTopRow:
 {
