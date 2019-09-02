@@ -39,7 +39,7 @@ export const Diploma = (props) => {
 
                 {/*Here is the first black row */}
 
-                <View style={styles.firstRow}>
+                <View style={[styles.firstRow, {backgroundColor: "black"}]}>
                     <View style={styles.printTopRowColumnLeft}></View>
                     <View style={styles.firstColumn}>
                         <View style={styles.textCenter}>
@@ -69,6 +69,10 @@ export const Diploma = (props) => {
                     </View>
                     <View style={styles.printTopRowColumnRight}></View>
                 </View>
+
+
+
+
 
                 {/* Here starts the middle of the certificate */}
 
@@ -158,7 +162,7 @@ export const Diploma = (props) => {
                                     <Text>___________________</Text>
                                 </SignatureDash>
                                 <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
+                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[1].full_name : 'Loading...'}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
                                     <Text style={styles.development} >Lead Instructor</Text>
@@ -361,7 +365,7 @@ export const Diploma = (props) => {
                                     <Text>___________________</Text>
                                 </SignatureDash>
                                 <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
+                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[1].full_name : 'Loading...'}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
                                     <Text style={styles.development} >Lead Instructor</Text>
@@ -471,7 +475,6 @@ textLeft:{
 firstRow:{
     display:"flex",
     flexDirection: "row",
-    flexWrap: "wrap",
     backgroundColor: "black",
     height:"150px",
     width: "100%"
@@ -493,7 +496,8 @@ secondRow:{
     // padding: "5px",
     display:"flex",
     flexDirection: "row",
-    height:"290px"
+    height:"290px",
+    width: "100%"
 },
 thirdRowFirstColumnModern:{
     width:"31%",
@@ -581,41 +585,41 @@ const FullStack = styled.Text`
   color:white;
 `;
 const FourCornersTopLeft = styled.Text`
-  border-bottom: 0.5px solid grey;
+
   border-bottom-width: 0.5px;
   border-bottom-style: solid;
-  border-bottom-color: grey;
+  border-bottom-color: red;
   height: 100%;
   border-right-width: 0.5px;
   border-right-style: solid;
-  border-right-color: grey;
+  border-right-color: red;
 `;
 const FourCornersTopRight = styled.Text`
   border-bottom-width: 0.5px;
   border-bottom-style: solid;
-  border-bottom-color: grey;
+  border-bottom-color: red;
   height: 100%;
   border-left-width: 0.5px;
   border-left-style: solid;
-  border-left-color: grey;
+  border-left-color: red;
 `;
 const FourCornersBottomLeft = styled.Text`
   border-top-width: 0.5px;
   border-top-style: solid;
-  border-top-color: grey;
+  border-top-color: red;
   height: 100%;
   border-right-width: 0.5px;
   border-right-style: solid;
-  border-right-color: grey;
+  border-right-color: red;
 `;
 const FourCornersBottomRight = styled.Text`
   border-top-width: 0.5px;
   border-top-style: solid;
-  border-top-color: grey;
+  border-top-color: red;
   height: 100%;
   border-left-width: 0.5px;
   border-left-style: solid;
-  border-left-color: grey;
+  border-left-color: red;
 `;
 const CodingSchool = styled.Text`
   text-align:left;
