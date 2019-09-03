@@ -17,11 +17,13 @@ class Certificate extends React.Component {
 			token: getUrlParameter("access_token"),
 			student_id: getUrlParameter("student"),
 			cohort: null,
-			student: null
+			student: null,
+      certStyle: getUrlParameter("style")
 		};
 	}
 
 	componentDidMount() {
+
 		if (this.state.cohort_id && this.state.student_id && this.state.token){
 			fetch(`${HOST}/cohort/${this.state.cohort_id}?access_token=${this.state.token}`)
 				.then(res => res.json())
@@ -57,20 +59,36 @@ class Certificate extends React.Component {
 
   render(props) {
     return (
-      <div>
-        <Notifier />
-        {!this.state.student ? null :
-            this.state.student.status === "studies_finished" ?
-                <Diploma student={this.state.student} cohort={this.state.cohort} />
-                :
-                <ul className="bcnotifier">
-                    <li>404 student has not graduated</li>
-                </ul>
+      <React.Fragment>
+        <div>
+          <Notifier />
 
-        }
-      </div>
+
+          {!this.state.student ? null :
+              this.state.student.status === "studies_finished"
+                  ?   ( !this.state.certStyle
+                      ? (<ul className="bcnotifier">
+                      <li>Please select a diploma style!</li>
+                  </ul>)
+                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />)
+                      )
+
+
+
+                  :
+                  <ul className="bcnotifier">
+                      <li>404 student has not graduated</li>
+                  </ul>
+
+          }
+        </div>
+
+      </React.Fragment>
     )
   }
 }
 
 export default Certificate ;
+
+
+// <Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />
