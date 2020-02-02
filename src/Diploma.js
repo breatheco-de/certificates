@@ -162,7 +162,7 @@ export const Diploma = (props) => {
                                     <Text>___________________</Text>
                                 </SignatureDash>
                                 <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[1].full_name : 'Loading...'}</Text>
+                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
                                     <Text style={styles.development} >Lead Instructor</Text>
