@@ -4,14 +4,22 @@ import moment from "moment";
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
 import { Notifier } from "bc-react-notifier";
+import en from "./en";
+import es from "./es";
 
 let studentNameMarginLeft = "250px";
 let studentNamePaddingTop = "0px";
 export const Diploma = (props) => {
+    
     const first = props.student.first_name;
     const certSt = props.certStyle
     const last = props.student.last_name;
     const student = props.student;
+    const lang = props.lang
+    let translation = en;
+    if(lang === "es"){
+        translation = es;
+    }
     return((!props.cohort || !props.student) ?
     <div className="loading">
         <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
@@ -60,10 +68,10 @@ export const Diploma = (props) => {
                     <View style={styles.thirdColumn}>
                         <View style={styles.textLeft}>
                             <FullStack>
-                                <Text>FULL STACK</Text>
+                                <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase(): translation["Full Stack"].toLocaleUpperCase()}</Text>
                             </FullStack>
                             <Development>
-                                <Text style={styles.development} >DEVELOPMENT</Text>
+                                <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase(): translation["Development"].toLocaleUpperCase()}</Text>
                             </Development>
                         </View>
                     </View>
@@ -81,7 +89,7 @@ export const Diploma = (props) => {
                     <View style={styles.printSecondRowColumnCenter}>
                         <RecognizesThat>
                             <Text style={styles.recognizes} >
-                                RECOGNIZES THAT
+                               {translation["Recognizes that"].toLocaleUpperCase()}
                             </Text>
                         </RecognizesThat>
                         {
@@ -123,17 +131,17 @@ export const Diploma = (props) => {
                         </Text>
                         <SuccesComplete>
                             <Text>
-                                HAS SUCCESSFULLY COMPLETED
+                                 {translation["Has Successfully Completed"].toLocaleUpperCase()}
                             </Text>
                         </SuccesComplete>
                         <FullStackDevProgram>
                             <Text>
-                                THE FULL STACK DEVELOPMENT PROGRAM
+                                {translation["The Full Stack Development Program"].toLocaleUpperCase()}
                             </Text>
                         </FullStackDevProgram>
                         <Hours>
                             <Text>
-                                320+HOURS
+                                320+ {translation["Hours"].toLocaleUpperCase()}
                             </Text>
                         </Hours>
                         <NameOfCohort>
@@ -165,7 +173,7 @@ export const Diploma = (props) => {
                                     <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
-                                    <Text style={styles.development} >Lead Instructor</Text>
+                                    <Text style={styles.development} >{translation["Lead Instructor"]}</Text>
                                 </LeadInstructor>
                             </View>
                         </View>
@@ -184,10 +192,10 @@ export const Diploma = (props) => {
                                     <Text style={styles.bold} >ALEJANDRO SANCHEZ</Text>
                                 </InstructorName>
                                 <LeadInstructor>
-                                    <Text>Co-founder and</Text>
+                                    <Text>{translation["Co-founder"]} {translation["And"]}</Text>
                                 </LeadInstructor>
                                 <LeadInstructor>
-                                    <Text>Lead Instructor</Text>
+                                    <Text>{translation["Lead Instructor"]}</Text>
                                 </LeadInstructor>
                             </View>
                         </View>
@@ -241,7 +249,7 @@ export const Diploma = (props) => {
                                 <Text>4GEEKS ACADEMY</Text>
                             </FourGeeks>
                             <CodingSchool>
-                                <Text style={styles.codingSchool} >NEW STYLE</Text>
+                                <Text style={styles.codingSchool} >CODING SCHOOL</Text>
                             </CodingSchool>
                         </View>
                     </View>
@@ -254,10 +262,10 @@ export const Diploma = (props) => {
                     <View style={styles.thirdColumn}>
                         <View style={styles.textLeft}>
                             <FullStack>
-                                <Text>FULL STACK</Text>
+                                <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase(): translation["Full Stack"].toLocaleUpperCase()}</Text>
                             </FullStack>
                             <Development>
-                                <Text style={styles.development} >DEVELOPMENT</Text>
+                                <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase(): translation["Development"].toLocaleUpperCase()}</Text>
                             </Development>
                         </View>
                     </View>
@@ -284,7 +292,7 @@ export const Diploma = (props) => {
                     <View style={styles.printSecondRowColumnCenter}>
                         <RecognizesThat>
                             <Text style={styles.recognizes} >
-                                RECOGNIZES THAT
+                                {translation["Recognizes that"].toUpperCase()}
                             </Text>
                         </RecognizesThat>
                         {
@@ -326,17 +334,17 @@ export const Diploma = (props) => {
                         </Text>
                         <SuccesComplete>
                             <Text>
-                                HAS SUCCESSFULLY COMPLETED
+                                 {translation["Has Successfully Completed"].toUpperCase()}
                             </Text>
                         </SuccesComplete>
                         <FullStackDevProgram>
                             <Text>
-                                THE FULL STACK DEVELOPMENT PROGRAM
+                                 {translation["The Full Stack Development Program"].toUpperCase()}
                             </Text>
                         </FullStackDevProgram>
                         <Hours>
                             <Text>
-                                320+HOURS
+                                320+ {translation["Hours"].toUpperCase()}
                             </Text>
                         </Hours>
                         <NameOfCohort>
@@ -365,10 +373,10 @@ export const Diploma = (props) => {
                                     <Text>___________________</Text>
                                 </SignatureDash>
                                 <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[1].full_name : 'Loading...'}</Text>
+                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
-                                    <Text style={styles.development} >Lead Instructor</Text>
+                                    <Text style={styles.development} >{translation["Lead Instructor"]}</Text>
                                 </LeadInstructor>
                             </View>
                         </View>
@@ -387,10 +395,10 @@ export const Diploma = (props) => {
                                     <Text style={styles.bold} >ALEJANDRO SANCHEZ</Text>
                                 </InstructorName>
                                 <LeadInstructor>
-                                    <Text>Co-founder and</Text>
+                                    <Text>{translation["Co-founder"]} {translation["And"]}</Text>
                                 </LeadInstructor>
                                 <LeadInstructor>
-                                    <Text>Lead Instructor</Text>
+                                    <Text>{translation["Lead Instructor"]}</Text>
                                 </LeadInstructor>
                             </View>
                         </View>

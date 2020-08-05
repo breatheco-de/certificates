@@ -1,5 +1,5 @@
 import React from 'react';
-import { Diploma } from  "./Diploma.js"
+import { Diploma } from  "./certificates/diploma/Diploma.js"
 import {  Notify, Notifier } from "bc-react-notifier";
 
 function getUrlParameter(name) {
@@ -17,8 +17,9 @@ class Certificate extends React.Component {
 			token: getUrlParameter("access_token"),
 			student_id: getUrlParameter("student"),
 			cohort: null,
-			student: null,
-      certStyle: getUrlParameter("style")
+            student: null,
+            language: getUrlParameter("lang"),
+            certStyle: getUrlParameter("style")
 		};
 	}
 
@@ -70,11 +71,8 @@ class Certificate extends React.Component {
                       ? (<ul className="bcnotifier">
                       <li>Please select a diploma style!</li>
                   </ul>)
-                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} />)
+                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} lang={this.state.language}/>)
                       )
-
-
-
                   :
                   <ul className="bcnotifier">
                       <li>404 student has not graduated</li>
