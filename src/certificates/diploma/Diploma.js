@@ -4,6 +4,7 @@ import moment from "moment";
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
 import { Notifier } from "bc-react-notifier";
+import LanguageSwitcher from "../components/LanguageSwitcher/language-switcher";
 import en from "./en";
 import es from "./es";
 
@@ -15,17 +16,20 @@ export const Diploma = (props) => {
     const certSt = props.certStyle
     const last = props.student.last_name;
     const student = props.student;
-    const lang = props.lang
+    const lang = props.lang;
+    const cohort = props.cohort;
+    const token = props.token;
     let translation = en;
     if(lang === "es"){
         translation = es;
     }
+    console.log(cohort)
     return((!props.cohort || !props.student) ?
     <div className="loading">
         <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
     </div>
     : (certSt === "default"
-      ? (<PDFViewer height="1000px" width="1620px">
+      ? (<div><PDFViewer height="1000px" width="1620px">
         <Document>
             <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 
@@ -216,9 +220,11 @@ export const Diploma = (props) => {
                 </View>
             </Page>
         </Document>
-    </PDFViewer>)
+    </PDFViewer>
+    <LanguageSwitcher translations={["es","en"]} current={lang} onClick={(lang) => {window.location.href = `/?cohort=${cohort.slug}&student=${student.id}&style=${certSt}&lang=${lang}&access_token=${token}` }}/></div>)
     :(certSt === "modern"
       ? (
+    <div>
       <PDFViewer height="1000px" width="1620px">
         <Document>
             <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
@@ -420,6 +426,7 @@ export const Diploma = (props) => {
             </Page>
         </Document>
     </PDFViewer>
+    <LanguageSwitcher translations={["es","en"]} current={lang} onClick={(lang) => {window.location.href = `/?cohort=${cohort.slug}&student=${student.id}&style=${certSt}&lang=${lang}&access_token=${token}` }}/></div>
     ):(<div className="container">
         <Notifier />
         <ul className="bcnotifier">

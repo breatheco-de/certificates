@@ -23,7 +23,7 @@ class Certificate extends React.Component {
 		};
 	}
 
-	componentDidMount() {
+componentDidMount() {
 
 		if (this.state.cohort_id && this.state.student_id && this.state.token){
 			fetch(`${HOST}/cohort/${this.state.cohort_id}?access_token=${this.state.token}`)
@@ -71,7 +71,7 @@ class Certificate extends React.Component {
                       ? (<ul className="bcnotifier">
                       <li>Please select a diploma style!</li>
                   </ul>)
-                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} lang={this.state.language}/>)
+                      : (<Diploma student={this.state.student} cohort={this.state.cohort} certStyle={this.state.certStyle} lang={this.state.language} token={this.state.token}/>)
                       )
                   :
                   <ul className="bcnotifier">
