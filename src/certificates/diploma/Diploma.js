@@ -5,592 +5,554 @@ import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
 import { Notifier } from "bc-react-notifier";
 import LanguageSwitcher from "../components/LanguageSwitcher/language-switcher";
+import * as dayjs from 'dayjs';
+import 'dayjs/locale/es';
 import en from "./en";
 import es from "./es";
 
-let studentNameMarginLeft = "250px";
+let studentNameMarginLeft = "220px";
 let studentNamePaddingTop = "0px";
 export const Diploma = (props) => {
-    
-    const first = props.student.first_name;
-    const certSt = props.certStyle
-    const last = props.student.last_name;
-    const student = props.student;
-    const lang = props.lang;
-    const cohort = props.cohort;
-    const token = props.token;
+    const { signed_by, signed_by_role, student, cohort, academy, specialty, lang, token, certificateStyle, created_at } = props;
+    const certSt = certificateStyle || "default";
+    const date = dayjs(created_at).locale(lang || "en").format("DD MMMM YYYY");
     let translation = en;
-    if(lang === "es"){
+    if (lang === "es") {
         translation = es;
     }
-    console.log(cohort)
-    return((!props.cohort || !props.student) ?
-    <div className="loading">
-        <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
-    </div>
-    : (certSt === "default"
-      ? (<div><PDFViewer height="1000px" width="1620px">
-        <Document>
-            <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
+    return ((!cohort || !student) ?
+        <div className="loading">
+            <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
+        </div>
+        : (certSt === "default"
+            ? (<div><PDFViewer height="1000px" width="1620px">
+                <Document>
+                    <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 
-                {/*Here is the first white row */}
+                        {/*Here is the first white row */}
 
-                <View style={styles.printTopRow}>
-                    <View style={styles.printTopRowColumnLeft}>
-                        <FourCornersTopLeft>
-                            <Text></Text>
-                        </FourCornersTopLeft>
-                    </View>
-                    <View style={styles.printTopRowColumnCenter}></View>
-                    <View style={styles.printTopRowColumnRight}>
-                        <FourCornersTopRight>
-                            <Text></Text>
-                        </FourCornersTopRight>
-                    </View>
-                </View>
-
-                {/*Here is the first black row */}
-
-                <View style={[styles.firstRow, {backgroundColor: "black"}]}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                    <View style={styles.firstColumn}>
-                        <View style={styles.textCenter}>
-                            <FourGeeks>
-                                <Text>4GEEKS ACADEMY</Text>
-                            </FourGeeks>
-                            <CodingSchool>
-                                <Text style={styles.codingSchool} >CODING SCHOOL</Text>
-                            </CodingSchool>
+                        <View style={styles.printTopRow}>
+                            <View style={styles.printTopRowColumnLeft}>
+                                <FourCornersTopLeft>
+                                    <Text></Text>
+                                </FourCornersTopLeft>
+                            </View>
+                            <View style={styles.printTopRowColumnCenter}></View>
+                            <View style={styles.printTopRowColumnRight}>
+                                <FourCornersTopRight>
+                                    <Text></Text>
+                                </FourCornersTopRight>
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.secondColumn}>
-                        <Image
-                            style={styles.image}
-                            src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
-                        />
-                    </View>
-                    <View style={styles.thirdColumn}>
-                        <View style={styles.textLeft}>
-                            <FullStack>
-                                <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase(): translation["Full Stack"].toLocaleUpperCase()}</Text>
-                            </FullStack>
-                            <Development>
-                                <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase(): translation["Development"].toLocaleUpperCase()}</Text>
-                            </Development>
+
+                        {/*Here is the first black row */}
+
+                        <View style={[styles.firstRow, { backgroundColor: "black" }]}>
+                            <View style={styles.printTopRowColumnLeft}></View>
+                            <View style={styles.firstColumn}>
+                                <View style={styles.textCenter}>
+                                    <FourGeeks>
+                                        <Text>4GEEKS ACADEMY</Text>
+                                    </FourGeeks>
+                                    <CodingSchool>
+                                        <Text style={styles.codingSchool} >CODING SCHOOL</Text>
+                                    </CodingSchool>
+                                </View>
+                            </View>
+                            <View style={styles.secondColumn}>
+                                <Image
+                                    style={styles.image}
+                                    src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
+                                />
+                            </View>
+                            <View style={styles.thirdColumn}>
+                                <View style={styles.textLeft}>
+                                    <FullStack>
+                                        <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase() : translation["Full Stack"].toLocaleUpperCase()}</Text>
+                                    </FullStack>
+                                    <Development>
+                                        <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase() : translation["Development"].toLocaleUpperCase()}</Text>
+                                    </Development>
+                                </View>
+                            </View>
+                            <View style={styles.printTopRowColumnRight}></View>
                         </View>
-                    </View>
-                    <View style={styles.printTopRowColumnRight}></View>
-                </View>
 
+                        {/* Here starts the middle of the certificate */}
 
+                        <View style={styles.secondRow}>
+                            <View style={styles.printTopRowColumnLeft}></View>
+                            <View style={styles.printSecondRowColumnCenter}>
+                                <RecognizesThat>
+                                    <Text style={styles.recognizes} >
+                                        {translation["Recognizes that"].toLocaleUpperCase()}
+                                    </Text>
+                                </RecognizesThat>
+                                {
+                                    (student
+                                        ? (student.first_name && student.last_name
+                                            ? (student.first_name.length < 6 && student.last_name.length < 6
+                                                ? (<View><FirstNameShortVersion>
+                                                    <Text style={styles.first_name}>&lt;/{student.first_name}</Text>
+                                                </FirstNameShortVersion>
+                                                    <LastNameShortVersion >
+                                                        <Text style={styles.last_name}>{student.last_name}&gt;</Text>
+                                                    </LastNameShortVersion>
+                                                </View>)
+                                                : ((<View><FirstName>
+                                                    <Text style={styles.first_name}>&lt;/{student.first_name}</Text>
+                                                </FirstName>
+                                                    <LastName>
+                                                        <Text style={styles.last_name}>{student.last_name}&gt;</Text>
+                                                    </LastName>
+                                                </View>)
+                                                ))
+                                            : (student.first_name
 
+                                                ? (<SingleNameVersion>
+                                                    <Text style={styles.first_name}>&lt;/{student.first_name}&gt;</Text>
+                                                </SingleNameVersion>)
 
+                                                : (<SingleNameVersion>
+                                                    <Text style={styles.last_name}>&lt;/{student.last_name}&gt;</Text>
+                                                </SingleNameVersion>)
 
-                {/* Here starts the middle of the certificate */}
+                                            )
+                                        )
+                                        : "Loading"
+                                    )}
 
-                <View style={styles.secondRow}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                    <View style={styles.printSecondRowColumnCenter}>
-                        <RecognizesThat>
-                            <Text style={styles.recognizes} >
-                               {translation["Recognizes that"].toLocaleUpperCase()}
-                            </Text>
-                        </RecognizesThat>
-                        {
-                        (student
-                            ?   (first && last
-                                ?   (first.length < 6 && last.length < 6
-                                    ?   (<View><FirstNameShortVersion>
-                                            <Text style={styles.first_name}>&lt;/{first}</Text>
-                                        </FirstNameShortVersion>
-                                        <LastNameShortVersion >
-                                            <Text style={styles.last_name}>{last}&gt;</Text>
-                                        </LastNameShortVersion>
-                                        </View>)
-                                    : ((<View><FirstName>
-                                            <Text style={styles.first_name}>&lt;/{first}</Text>
-                                        </FirstName>
-                                        <LastName>
-                                            <Text style={styles.last_name}>{last}&gt;</Text>
-                                        </LastName>
-                                        </View>)
-                                        ))
-                                :   (first
-
-                                    ?   (<SingleNameVersion>
-                                            <Text style={styles.first_name}>&lt;/{first}&gt;</Text>
-                                        </SingleNameVersion>)
-
-                                    :   (<SingleNameVersion>
-                                            <Text style={styles.last_name}>&lt;/{last}&gt;</Text>
-                                        </SingleNameVersion>)
-
-                                    )
-                                )
-                            : "Loading"
-                        )}
-
-                        <Text style={styles.colorDash}>
-                            _________________________________
+                                <Text style={styles.colorDash}>
+                                    _________________________________
                         </Text>
-                        <SuccesComplete>
-                            <Text>
-                                 {translation["Has Successfully Completed"].toLocaleUpperCase()}
-                            </Text>
-                        </SuccesComplete>
-                        <FullStackDevProgram>
-                            <Text>
-                                {translation["The Full Stack Development Program"].toLocaleUpperCase()}
-                            </Text>
-                        </FullStackDevProgram>
-                        <Hours>
-                            <Text>
-                                320+ {translation["Hours"].toLocaleUpperCase()}
-                            </Text>
-                        </Hours>
-                        <NameOfCohort>
-                            <Text>
-                                {props.cohort.name}
-                            </Text>
-                        </NameOfCohort>
-                        <GraduationDate>
-                            <Text>
-                                {moment(props.cohort.ending_date).format(
-                                    "MMMM Do YYYY"
-                                )}
-                            </Text>
-                        </GraduationDate>
-                    </View>
-                    <View style={styles.printTopRowColumnRight}></View>
-                </View>
+                                <SuccesComplete>
+                                    <Text>
+                                        {translation["Has Successfully Completed"].toLocaleUpperCase()}
+                                    </Text>
+                                </SuccesComplete>
+                                <FullStackDevProgram>
+                                    <Text>
+                                        {translation["The Full Stack Development Program"].toLocaleUpperCase()}
+                                    </Text>
+                                </FullStackDevProgram>
+                                <Hours>
+                                    <Text>
+                                        {specialty.duration_in_hours} {translation["Hours"].toLocaleUpperCase()}
+                                    </Text>
+                                </Hours>
+                                <NameOfCohort>
+                                    <Text>
+                                        {cohort.name}
+                                    </Text>
+                                </NameOfCohort>
+                                <GraduationDate>
+                                    <Text>{date}</Text>
+                                </GraduationDate>
+                            </View>
+                            <View style={styles.printTopRowColumnRight}></View>
+                        </View>
 
-                {/*this is the last row of the certificate*/}
+                        {/*this is the last row of the certificate*/}
 
-                <View style={styles.thirdRow}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                        <View style={styles.firstColumn}>
+                        <View style={styles.thirdRow}>
+                            <View style={styles.printTopRowColumnLeft}></View>
+                            {/*                       <View style={styles.firstColumn}>
                             <View style={styles.textCenter}>
                                 <SignatureDash>
                                     <Text>___________________</Text>
                                 </SignatureDash>
                                 <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
+                                    <Text style={styles.bold} >{signed_by}</Text>
                                 </InstructorName>
                                 <LeadInstructor>
                                     <Text style={styles.development} >{translation["Lead Instructor"]}</Text>
                                 </LeadInstructor>
                             </View>
+                            </View> */}
+                            <View style={styles.secondColumn}>
+                                <Image
+                                    style={styles.image}
+                                    src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
+                                />
+                            </View>
+                            <View style={styles.thirdColumn}>
+                                <View style={styles.textLeft}>
+                                    <SignatureDash>
+                                        <Text>___________________</Text>
+                                    </SignatureDash>
+                                    <InstructorName>
+                                        <Text style={styles.bold} >{signed_by.toUpperCase()}</Text>
+                                    </InstructorName>
+                                    <LeadInstructor>
+                                        <Text>{signed_by_role}</Text>
+                                    </LeadInstructor>
+                                </View>
+                            </View>
+                            <View style={styles.printTopRowColumnRight}></View>
                         </View>
-                        <View style={styles.secondColumn}>
-                            <Image
-                                style={styles.image}
-                                src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
-                            />
-                        </View>
-                        <View style={styles.thirdColumn}>
-                            <View style={styles.textLeft}>
-                                <SignatureDash>
-                                    <Text>___________________</Text>
-                                </SignatureDash>
-                                <InstructorName>
-                                    <Text style={styles.bold} >ALEJANDRO SANCHEZ</Text>
-                                </InstructorName>
-                                <LeadInstructor>
-                                    <Text>{translation["Co-founder"]} {translation["And"]}</Text>
-                                </LeadInstructor>
-                                <LeadInstructor>
-                                    <Text>{translation["Lead Instructor"]}</Text>
-                                </LeadInstructor>
+                        <View style={styles.printBottomRow}>
+                            <View style={styles.printTopRowColumnLeft}>
+                                <FourCornersBottomLeft>
+                                    <Text></Text>
+                                </FourCornersBottomLeft>
+                            </View>
+                            <View style={styles.printTopRowColumnCenter}></View>
+                            <View style={styles.printTopRowColumnRight}>
+                                <FourCornersBottomRight>
+                                    <Text></Text>
+                                </FourCornersBottomRight>
                             </View>
                         </View>
-                    <View style={styles.printTopRowColumnRight}></View>
-              </View>
-              <View style={styles.printBottomRow}>
-                    <View style={styles.printTopRowColumnLeft}>
-                        <FourCornersBottomLeft>
-                            <Text></Text>
-                        </FourCornersBottomLeft>
-                    </View>
-                    <View style={styles.printTopRowColumnCenter}></View>
-                    <View style={styles.printTopRowColumnRight}>
-                        <FourCornersBottomRight>
-                            <Text></Text>
-                        </FourCornersBottomRight>
-                    </View>
-                </View>
-            </Page>
-        </Document>
-    </PDFViewer>
-    <LanguageSwitcher translations={["es","en"]} current={lang} onClick={(lang) => {window.location.href = `/?cohort=${cohort.slug}&student=${student.id}&style=${certSt}&lang=${lang}&access_token=${token}` }}/></div>)
-    :(certSt === "modern"
-      ? (
-    <div>
-      <PDFViewer height="1000px" width="1620px">
-        <Document>
-            <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
+                    </Page>
+                </Document>
+            </PDFViewer>
+                <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/?token=${token}&lang=${lang}` }} /></div>)
+            : (certSt === "modern"
+                ? (
+                    <div>
+                        <PDFViewer height="1000px" width="1620px">
+                            <Document>
+                                <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 
-                {/*Here is the first white row */}
+                                    {/*Here is the first white row */}
 
-                <View style={styles.printTopRow}>
-                    <View style={styles.printTopRowColumnLeft}>
-                        <FourCornersTopLeft>
-                            <Text></Text>
-                        </FourCornersTopLeft>
-                    </View>
-                    <View style={styles.printTopRowColumnCenter}></View>
-                    <View style={styles.printTopRowColumnRight}>
-                        <FourCornersTopRight>
-                            <Text></Text>
-                        </FourCornersTopRight>
-                    </View>
-                </View>
+                                    <View style={styles.printTopRow}>
+                                        <View style={styles.printTopRowColumnLeft}>
+                                            <FourCornersTopLeft>
+                                                <Text></Text>
+                                            </FourCornersTopLeft>
+                                        </View>
+                                        <View style={styles.printTopRowColumnCenter}></View>
+                                        <View style={styles.printTopRowColumnRight}>
+                                            <FourCornersTopRight>
+                                                <Text></Text>
+                                            </FourCornersTopRight>
+                                        </View>
+                                    </View>
 
-                {/*Here is the first black row */}
+                                    {/*Here is the first black row */}
 
-                <View style={styles.firstRow}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                    <View style={styles.firstColumn}>
-                        <View style={styles.textCenter}>
-                            <FourGeeks>
-                                <Text>4GEEKS ACADEMY</Text>
-                            </FourGeeks>
-                            <CodingSchool>
-                                <Text style={styles.codingSchool} >CODING SCHOOL</Text>
-                            </CodingSchool>
-                        </View>
-                    </View>
-                    <View style={styles.secondColumn}>
-                        <Image
-                            style={styles.image}
-                            src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
-                        />
-                    </View>
-                    <View style={styles.thirdColumn}>
-                        <View style={styles.textLeft}>
-                            <FullStack>
-                                <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase(): translation["Full Stack"].toLocaleUpperCase()}</Text>
-                            </FullStack>
-                            <Development>
-                                <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase(): translation["Development"].toLocaleUpperCase()}</Text>
-                            </Development>
-                        </View>
-                    </View>
-                    <View style={styles.printTopRowColumnRight}></View>
+                                    <View style={styles.firstRow}>
+                                        <View style={styles.printTopRowColumnLeft}></View>
+                                        <View style={styles.firstColumn}>
+                                            <View style={styles.textCenter}>
+                                                <FourGeeks>
+                                                    <Text>4GEEKS ACADEMY</Text>
+                                                </FourGeeks>
+                                                <CodingSchool>
+                                                    <Text style={styles.codingSchool} >CODING SCHOOL</Text>
+                                                </CodingSchool>
+                                            </View>
+                                        </View>
+                                        <View style={styles.secondColumn}>
+                                            <Image
+                                                style={styles.image}
+                                                src="https://ucarecdn.com/f422469c-4d65-4daa-979f-e2ce93df68a6/-/resize/150x/"
+                                            />
+                                        </View>
+                                        <View style={styles.thirdColumn}>
+                                            <View style={styles.textLeft}>
+                                                <FullStack>
+                                                    <Text>{lang === "es" ? translation["Development"].toLocaleUpperCase() : translation["Full Stack"].toLocaleUpperCase()}</Text>
+                                                </FullStack>
+                                                <Development>
+                                                    <Text style={styles.development} >{lang === "es" ? translation["Full Stack"].toLocaleUpperCase() : translation["Development"].toLocaleUpperCase()}</Text>
+                                                </Development>
+                                            </View>
+                                        </View>
+                                        <View style={styles.printTopRowColumnRight}></View>
 
-                </View>
+                                    </View>
 
-                <View style={styles.roundedRowModern}>
-                  <View style={styles.printTopRowColumnLeft}></View>
-                    <View style={styles.printTopRowColumnCenter}>
-                      <Canvas style={styles.square} paint={
-                        (j)=>{j.path('M 0 0 C 200 100 550 100 810 0 Z').fill("black").stroke('black')}}>
-                      </Canvas>
-                    </View>
-                  <View style={styles.printTopRowColumnRight}></View>
-                </View>
+                                    <View style={styles.roundedRowModern}>
+                                        <View style={styles.printTopRowColumnLeft}></View>
+                                        <View style={styles.printTopRowColumnCenter}>
+                                            <Canvas style={styles.square} paint={
+                                                (j) => { j.path('M 0 0 C 200 100 550 100 810 0 Z').fill("black").stroke('black') }}>
+                                            </Canvas>
+                                        </View>
+                                        <View style={styles.printTopRowColumnRight}></View>
+                                    </View>
 
 
 
-                {/* Here starts the middle of the certificate */}
+                                    {/* Here starts the middle of the certificate */}
 
-                <View style={styles.secondRowModern}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                    <View style={styles.printSecondRowColumnCenter}>
-                        <RecognizesThat>
-                            <Text style={styles.recognizes} >
-                                {translation["Recognizes that"].toUpperCase()}
-                            </Text>
-                        </RecognizesThat>
-                        {
-                        (student
-                            ?   (first && last
-                                ?   (first.length < 6 && last.length < 6
-                                    ?   (<View><FirstNameShortVersion>
-                                            <Text style={styles.first_name}>&lt;/{first}</Text>
-                                        </FirstNameShortVersion>
-                                        <LastNameShortVersion >
-                                            <Text style={styles.last_name}>{last}&gt;</Text>
-                                        </LastNameShortVersion>
-                                        </View>)
-                                    : ((<View><FirstName>
-                                            <Text style={styles.first_name}>&lt;/{first}</Text>
-                                        </FirstName>
-                                        <LastName>
-                                            <Text style={styles.last_name}>{last}&gt;</Text>
-                                        </LastName>
-                                        </View>)
-                                        ))
-                                :   (first
+                                    <View style={styles.secondRowModern}>
+                                        <View style={styles.printTopRowColumnLeft}></View>
+                                        <View style={styles.printSecondRowColumnCenter}>
+                                            <RecognizesThat>
+                                                <Text style={styles.recognizes} >
+                                                    {translation["Recognizes that"].toUpperCase()}
+                                                </Text>
+                                            </RecognizesThat>
+                                            {
+                                                (student
+                                                    ? (student.first_name && student.last_name
+                                                        ? (student.first_name.length < 6 && student.last_name.length < 6
+                                                            ? (<View><FirstNameShortVersion>
+                                                                <Text style={styles.first_name}>&lt;/{student.first_name}</Text>
+                                                            </FirstNameShortVersion>
+                                                                <LastNameShortVersion >
+                                                                    <Text style={styles.last_name}>{student.last_name}&gt;</Text>
+                                                                </LastNameShortVersion>
+                                                            </View>)
+                                                            : ((<View><FirstName>
+                                                                <Text style={styles.first_name}>&lt;/{student.first_name}</Text>
+                                                            </FirstName>
+                                                                <LastName>
+                                                                    <Text style={styles.last_name}>{student.last_name}&gt;</Text>
+                                                                </LastName>
+                                                            </View>)
+                                                            ))
+                                                        : (student.first_name
 
-                                    ?   (<SingleNameVersion>
-                                            <Text style={styles.first_name}>&lt;/{first}&gt;</Text>
-                                        </SingleNameVersion>)
+                                                            ? (<SingleNameVersion>
+                                                                <Text style={styles.first_name}>&lt;/{student.first_name}&gt;</Text>
+                                                            </SingleNameVersion>)
 
-                                    :   (<SingleNameVersion>
-                                            <Text style={styles.last_name}>&lt;/{last}&gt;</Text>
-                                        </SingleNameVersion>)
+                                                            : (<SingleNameVersion>
+                                                                <Text style={styles.last_name}>&lt;/{student.last_name}&gt;</Text>
+                                                            </SingleNameVersion>)
 
-                                    )
-                                )
-                            : "Loading"
-                        )}
+                                                        )
+                                                    )
+                                                    : "Loading"
+                                                )}
 
-                        <Text style={styles.colorDash}>
-                            _________________________________
+                                            <Text style={styles.colorDash}>
+                                                _________________________________
                         </Text>
-                        <SuccesComplete>
-                            <Text>
-                                 {translation["Has Successfully Completed"].toUpperCase()}
-                            </Text>
-                        </SuccesComplete>
-                        <FullStackDevProgram>
-                            <Text>
-                                 {translation["The Full Stack Development Program"].toUpperCase()}
-                            </Text>
-                        </FullStackDevProgram>
-                        <Hours>
-                            <Text>
-                                320+ {translation["Hours"].toUpperCase()}
-                            </Text>
-                        </Hours>
-                        <NameOfCohort>
-                            <Text>
-                                {props.cohort.name}
-                            </Text>
-                        </NameOfCohort>
-                        <GraduationDate>
-                            <Text>
-                                {moment(props.cohort.ending_date).format(
-                                    "MMMM Do YYYY"
-                                )}
-                            </Text>
-                        </GraduationDate>
-                    </View>
-                    <View style={styles.printTopRowColumnRight}></View>
-                </View>
+                                            <SuccesComplete>
+                                                <Text>
+                                                    {translation["Has Successfully Completed"].toUpperCase()}
+                                                </Text>
+                                            </SuccesComplete>
+                                            <FullStackDevProgram>
+                                                <Text>
+                                                    {translation["The Full Stack Development Program"].toUpperCase()}
+                                                </Text>
+                                            </FullStackDevProgram>
+                                            <Hours>
+                                                <Text>
+                                                    {specialty.duration_in_hours} {translation["Hours"].toUpperCase()}
+                                                </Text>
+                                            </Hours>
+                                            <NameOfCohort>
+                                                <Text>
+                                                    {cohort.name}
+                                                </Text>
+                                            </NameOfCohort>
+                                            <GraduationDate>
+                                                <Text>{date}</Text>
+                                            </GraduationDate>
+                                        </View>
+                                        <View style={styles.printTopRowColumnRight}></View>
+                                    </View>
 
-                {/*this is the last row of the certificate*/}
+                                    {/*this is the last row of the certificate*/}
 
-                <View style={styles.thirdRowModern}>
-                    <View style={styles.printTopRowColumnLeft}></View>
-                        <View style={styles.thirdRowFirstColumnModern}>
-                            <View style={styles.textCenter}>
-                                <SignatureDash>
-                                    <Text>___________________</Text>
-                                </SignatureDash>
-                                <InstructorName>
-                                    <Text style={styles.bold} >{props.cohort ? props.cohort.full_teachers[0].full_name : 'Loading...'}</Text>
-                                </InstructorName>
-                                <LeadInstructor>
-                                    <Text style={styles.development} >{translation["Lead Instructor"]}</Text>
-                                </LeadInstructor>
-                            </View>
-                        </View>
-                        <View style={styles.thirdRowSecondColumnModern}>
-                            <Image
-                                style={styles.image}
-                                src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
-                            />
-                        </View>
-                        <View style={styles.thirdRowThirdColumnModern}>
-                            <View style={styles.textLeft}>
-                                <SignatureDash>
-                                    <Text>___________________</Text>
-                                </SignatureDash>
-                                <InstructorName>
-                                    <Text style={styles.bold} >ALEJANDRO SANCHEZ</Text>
-                                </InstructorName>
-                                <LeadInstructor>
-                                    <Text>{translation["Co-founder"]} {translation["And"]}</Text>
-                                </LeadInstructor>
-                                <LeadInstructor>
-                                    <Text>{translation["Lead Instructor"]}</Text>
-                                </LeadInstructor>
-                            </View>
-                        </View>
-                    <View style={styles.printTopRowColumnRight}></View>
-              </View>
-              <View style={styles.printBottomRow}>
-                    <View style={styles.printTopRowColumnLeft}>
-                        <FourCornersBottomLeft>
-                            <Text></Text>
-                        </FourCornersBottomLeft>
-                    </View>
-                    <View style={styles.printTopRowColumnCenter}></View>
-                    <View style={styles.printTopRowColumnRight}>
-                        <FourCornersBottomRight>
-                            <Text></Text>
-                        </FourCornersBottomRight>
-                    </View>
-                </View>
-            </Page>
-        </Document>
-    </PDFViewer>
-    <LanguageSwitcher translations={["es","en"]} current={lang} onClick={(lang) => {window.location.href = `/?cohort=${cohort.slug}&student=${student.id}&style=${certSt}&lang=${lang}&access_token=${token}` }}/></div>
-    ):(<div className="container">
-        <Notifier />
-        <ul className="bcnotifier">
-                      <li>The style has to be either <b>default</b> or <b>modern</b></li>
-                  </ul>
+                                    <View style={styles.thirdRowModern}>
+                                        <View style={styles.printTopRowColumnLeft}></View>
+                                        <View style={styles.thirdRowFirstColumnModern}>
+                                            <Image
+                                                style={styles.image}
+                                                src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
+                                            />
+                                        </View>
+                                        <View style={styles.thirdRowSecondColumnModern}>
 
-    </div>))
-
+                                        </View>
+                                        <View style={styles.thirdRowThirdColumnModern}>
+                                            <View style={styles.textLeft}>
+                                                <SignatureDash>
+                                                    <Text>___________________</Text>
+                                                </SignatureDash>
+                                                <InstructorName>
+                                                    <Text style={styles.bold} >{signed_by}</Text>
+                                                </InstructorName>
+                                                <LeadInstructor>
+                                                    <Text>{signed_by_role}</Text>
+                                                </LeadInstructor>
+                                            </View>
+                                        </View>
+                                        <View style={styles.printTopRowColumnRight}></View>
+                                    </View>
+                                    <View style={styles.printBottomRow}>
+                                        <View style={styles.printTopRowColumnLeft}>
+                                            <FourCornersBottomLeft>
+                                                <Text></Text>
+                                            </FourCornersBottomLeft>
+                                        </View>
+                                        <View style={styles.printTopRowColumnCenter}></View>
+                                        <View style={styles.printTopRowColumnRight}>
+                                            <FourCornersBottomRight>
+                                                <Text></Text>
+                                            </FourCornersBottomRight>
+                                        </View>
+                                    </View>
+                                </Page>
+                            </Document>
+                        </PDFViewer>
+                        <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/?token=${token}/lang=${lang}` }} /></div>
+                ) : (<div className="container">
+                    <Notifier />
+                    <ul className="bcnotifier">
+                        <li>The style has to be either <b>default</b> or <b>modern</b></li>
+                    </ul>
+                </div>))
+        )
     )
-
-
-    )
-
-
-    }
+}
 
 
 const styles = StyleSheet.create({
-first_name:{
-    fontFamily:"Helvetica",
-    fontWeight:"100",
-},
-square:{
-    height: '100px',
-    width: '100%'
+    first_name: {
+        fontFamily: "Helvetica",
+        fontWeight: "100",
+    },
+    square: {
+        height: '100px',
+        width: '100%'
 
-  },
+    },
 
-last_name:{
-    fontFamily:"Helvetica-Bold",
-    fontWeight:"heavy"
+    last_name: {
+        fontFamily: "Helvetica-Bold",
+        fontWeight: "heavy"
 
-},
-recognizes:{
-    fontFamily:"Helvetica-Bold",
-    fontWeight:"500"
+    },
+    recognizes: {
+        fontFamily: "Helvetica-Bold",
+        fontWeight: "500"
 
-},
-bold:{
-    fontFamily:"Helvetica-Bold",
+    },
+    bold: {
+        fontFamily: "Helvetica-Bold",
 
-},
-colorDash:{
-    color:"#44B2E4",
-    textAlign:"center",
-    marginTop:"0px",
-    paddingTop:"0px"
+    },
+    colorDash: {
+        color: "#44B2E4",
+        textAlign: "center",
+        marginTop: "0px",
+        paddingTop: "0px"
 
 
-},
-textCenter:{
-    textaAlign:"center",
-    marginTop:"50px",
-    marginLeft:"35px"
-},
-textLeft:{
-    textAlign:"right",
-    marginTop: "50px",
-    marginRight:"20px"
-},
-firstRow:{
-    display:"flex",
-    flexDirection: "row",
-    backgroundColor: "black",
-    height:"150px",
-    width: "100%"
-},
-roundedRowModern:{
-    display:"flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    height:"75px",
-    width: "100%"
-},
-secondRowModern:{
-    // padding: "5px",
-    display:"flex",
-    flexDirection: "row",
-    height:"225px"
-},
-secondRow:{
-    // padding: "5px",
-    display:"flex",
-    flexDirection: "row",
-    height:"290px",
-    width: "100%"
-},
-thirdRowFirstColumnModern:{
-    width:"31%",
-    display:"flex",
-    flexDirection: "column"
-},
-thirdRowSecondColumnModern:{
-    width:"34%"
-},
-thirdRowThirdColumnModern:{
-    width:"31%"
-},
+    },
+    textCenter: {
+        textaAlign: "center",
+        marginTop: "50px",
+        marginLeft: "35px"
+    },
+    textLeft: {
+        textAlign: "right",
+        marginTop: "50px",
+        marginRight: "20px"
+    },
+    firstRow: {
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "black",
+        height: "150px",
+        width: "100%"
+    },
+    roundedRowModern: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        height: "75px",
+        width: "100%"
+    },
+    secondRowModern: {
+        // padding: "5px",
+        display: "flex",
+        flexDirection: "row",
+        height: "225px"
+    },
+    secondRow: {
+        // padding: "5px",
+        display: "flex",
+        flexDirection: "row",
+        height: "290px",
+        width: "100%"
+    },
+    thirdRowFirstColumnModern: {
+        width: "31%",
+        display: "flex",
+        flexDirection: "column"
+    },
+    thirdRowSecondColumnModern: {
+        width: "34%"
+    },
+    thirdRowThirdColumnModern: {
+        width: "31%"
+    },
 
-firstColumn:{
-    width:"31%",
-    display:"flex",
-    flexDirection: "column"
+    firstColumn: {
+        width: "31%",
+        display: "flex",
+        flexDirection: "column"
 
-},
-secondColumn:{
-    width:"34%"
-},
-thirdColumn:{
-    width:"31%"
-},
-image:{
-    textaAlign:"center",
-    margin:"auto",
-    padding:"30px"
-},
-thirdRow:{
-    display:"flex",
-    flexDirection: "row",
-    height:"125px"
-},
-thirdRowModern:{
-    display:"flex",
-    flexDirection: "row",
-    height:"115px"
-},
-printTopRow:
-{
-    display:"flex",
-    flexDirection: "row",
-    height:"15px",
-    backgroundColor:"white"
-},
-printTopRowColumnLeft:
-{
-    width: "2%",
-    backgroundColor:"white"
+    },
+    secondColumn: {
+        width: "34%"
+    },
+    thirdColumn: {
+        width: "31%"
+    },
+    image: {
+        textaAlign: "center",
+        margin: "auto",
+        padding: "30px"
+    },
+    thirdRow: {
+        display: "flex",
+        flexDirection: "row",
+        height: "125px"
+    },
+    thirdRowModern: {
+        display: "flex",
+        flexDirection: "row",
+        height: "115px"
+    },
+    printTopRow:
+    {
+        display: "flex",
+        flexDirection: "row",
+        height: "15px",
+        backgroundColor: "white"
+    },
+    printTopRowColumnLeft:
+    {
+        width: "2%",
+        backgroundColor: "white"
 
-},
-printSecondRowColumnCenter:
-{
-    width:"96%",
-    backgroundColor:"white",
-    display:"flex",
-    flexDirection: "column"
-},
-printTopRowColumnCenter:
-{
-    width: "96%",
-    backgroundColor:"white",
-    height: "15px"
-},
-printTopRowColumnRight:
-{
-    width: "2%",
-    backgroundColor:"white"
-},
-printBottomRow:
-{
-    display:"flex",
-    flexDirection: "row",
-    height:"15px",
-    backgroundColor:"white"
-}
+    },
+    printSecondRowColumnCenter:
+    {
+        width: "96%",
+        backgroundColor: "white",
+        display: "flex",
+        flexDirection: "column"
+    },
+    printTopRowColumnCenter:
+    {
+        width: "96%",
+        backgroundColor: "white",
+        height: "15px"
+    },
+    printTopRowColumnRight:
+    {
+        width: "2%",
+        backgroundColor: "white"
+    },
+    printBottomRow:
+    {
+        display: "flex",
+        flexDirection: "row",
+        height: "15px",
+        backgroundColor: "white"
+    }
 });
 
 const FullStack = styled.Text`
@@ -644,10 +606,6 @@ const CodingSchool = styled.Text`
   color:white;
   background-color:#44B2E4;
   margin: 0 auto;
-
-
-
-
 `;
 const FourGeeks = styled.Text`
   text-align:center;
@@ -662,9 +620,6 @@ const Development = styled.Text`
     color:white;
     background-color:#F6B03F;
     margin: 0 auto;
-
-
-
 `;
 const InstructorName = styled.Text`
   font-size:13px;
@@ -713,7 +668,7 @@ const SingleNameVersion = styled.Text`
 const LastName = styled.Text`
   font-size:50px;
   color:black;
-  margin-left:416px;
+  margin-left:360px;
   font-weight:900;
   margin-bottom:0px;
   padding-bottom:0px;
@@ -722,7 +677,7 @@ const FirstNameShortVersion = styled.Text`
   font-weight:100
   font-size:50px;
   color:black;
-  margin-left:300px;
+  margin-left:220px;
   paddingTop:${studentNamePaddingTop};
   margin-bottom:0px;
   padding-bottom:0px;
@@ -730,7 +685,7 @@ const FirstNameShortVersion = styled.Text`
 const LastNameShortVersion = styled.Text`
   font-size:50px;
   color:black;
-  margin-left:380px;
+  margin-left:300px;
   font-weight:900;
   margin-bottom:0px;
   padding-bottom:0px;

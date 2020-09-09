@@ -1,5 +1,5 @@
 import React from 'react';
-import { Diploma } from  "./certificates/diploma/Diploma.js"
+import { Diploma } from  "./certificates/diploma/Diploma.js";
 import {  Notify, Notifier } from "bc-react-notifier";
 
 function getUrlParameter(name) {
@@ -54,7 +54,7 @@ componentDidMount() {
 				.catch(err =>
 					Notify.error(err.message || "there was a problem")
 				);
-        } else Notify.error("Specify a cohort, student and access_token")
+        } else Notify.error("Specify a cohort, student and access_token");
 	}
 
 

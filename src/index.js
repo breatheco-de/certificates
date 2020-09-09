@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Certificate from './App';
+//import Certificate from './App';
 import * as serviceWorker from './serviceWorker';
+import Certificate from "./certificates/views/pdf";
 
 ReactDOM.render(<Certificate />, document.getElementById('root'));
 

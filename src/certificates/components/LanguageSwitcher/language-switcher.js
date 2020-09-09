@@ -17,11 +17,11 @@ const LanguageSwitcher = ({ current, translations, onClick }) => {
         <ul>
             {
                 translations.filter(lang => lang !== current).map(lang => {
-                    return (<li><span onClick={() => onClick(lang)}><Icon lang={lang == "en" ? "us" : lang} /></span></li>);
+                    return (<li><span onClick={() => onClick(lang)}><Icon lang={lang === "en" ? "us" : lang} /></span></li>);
                 })
             }
         </ul>
-        <span><Icon lang={current == 'en' ? 'us' : current} /></span>
+        <span><Icon lang={current === 'en' ? 'us' : current} /></span>
     </div>);
 };
 
