@@ -1,6 +1,5 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Canvas } from '@react-pdf/renderer';
-import moment from "moment";
+import { Page, Text, View, Document, StyleSheet, PDFViewer, Image, Canvas, Font } from '@react-pdf/renderer';
 import styled from "@react-pdf/styled-components";
 import Spinner from 'react-spinner-material';
 import { Notifier } from "bc-react-notifier";
@@ -9,6 +8,7 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import en from "./en";
 import es from "./es";
+
 
 let studentNameMarginLeft = "220px";
 let studentNamePaddingTop = "0px";
@@ -20,7 +20,7 @@ export const Diploma = (props) => {
     if (lang === "es") {
         translation = es;
     }
-    return ((!cohort || !student) ?
+    return ((!student) ?
         <div className="loading">
             <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
         </div>
@@ -142,7 +142,7 @@ export const Diploma = (props) => {
                                 </Hours>
                                 <NameOfCohort>
                                     <Text>
-                                        {cohort.name}
+                                        {"4Geeks Academy Madrid"}
                                     </Text>
                                 </NameOfCohort>
                                 <GraduationDate>
@@ -156,29 +156,21 @@ export const Diploma = (props) => {
 
                         <View style={styles.thirdRow}>
                             <View style={styles.printTopRowColumnLeft}></View>
-                            {/*                       <View style={styles.firstColumn}>
-                            <View style={styles.textCenter}>
-                                <SignatureDash>
-                                    <Text>___________________</Text>
-                                </SignatureDash>
-                                <InstructorName>
-                                    <Text style={styles.bold} >{signed_by}</Text>
-                                </InstructorName>
-                                <LeadInstructor>
-                                    <Text style={styles.development} >{translation["Lead Instructor"]}</Text>
-                                </LeadInstructor>
-                            </View>
-                            </View> */}
-                            <View style={styles.secondColumn}>
+                            <View style={styles.firstColumn}>
                                 <Image
                                     style={styles.image}
                                     src="https://ucarecdn.com/761d2f6c-366a-4df7-a2b9-e60d6f31e8f6/-/resize/700x/"
                                 />
+                            </View> 
+                            <View style={styles.secondColumn}>
                             </View>
                             <View style={styles.thirdColumn}>
                                 <View style={styles.textLeft}>
+                                    <Signature>
+                                       <Text style={styles.signature}>{signed_by}</Text>  
+                                    </Signature>
                                     <SignatureDash>
-                                        <Text>___________________</Text>
+                                        <Text> ___________________ </Text>
                                     </SignatureDash>
                                     <InstructorName>
                                         <Text style={styles.bold} >{signed_by.toUpperCase()}</Text>
@@ -196,7 +188,9 @@ export const Diploma = (props) => {
                                     <Text></Text>
                                 </FourCornersBottomLeft>
                             </View>
-                            <View style={styles.printTopRowColumnCenter}></View>
+                            <View style={styles.printTopRowColumnCenter}>
+                                <Text>{"Verify this certificate at https://certificate.breatheco.de/" + token}</Text>
+                            </View>
                             <View style={styles.printTopRowColumnRight}>
                                 <FourCornersBottomRight>
                                     <Text></Text>
@@ -206,7 +200,7 @@ export const Diploma = (props) => {
                     </Page>
                 </Document>
             </PDFViewer>
-                <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/?token=${token}&lang=${lang}` }} /></div>)
+                <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/pdf/${token}?lang=${lang}` }} /></div>)
             : (certSt === "modern"
                 ? (
                     <div>
@@ -366,7 +360,8 @@ export const Diploma = (props) => {
                                         <View style={styles.thirdRowThirdColumnModern}>
                                             <View style={styles.textLeft}>
                                                 <SignatureDash>
-                                                    <Text>___________________</Text>
+                                                    <Text >{signed_by}</Text>
+                                                    <Text> ___________________ </Text>
                                                 </SignatureDash>
                                                 <InstructorName>
                                                     <Text style={styles.bold} >{signed_by}</Text>
@@ -394,16 +389,22 @@ export const Diploma = (props) => {
                                 </Page>
                             </Document>
                         </PDFViewer>
-                        <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/?token=${token}/lang=${lang}` }} /></div>
+                        <LanguageSwitcher translations={["es", "en"]} current={lang} onClick={(lang) => { window.location.href = `/pdf/${token}?lang=${lang}` }} /></div>
                 ) : (<div className="container">
                     <Notifier />
                     <ul className="bcnotifier">
                         <li>The style has to be either <b>default</b> or <b>modern</b></li>
                     </ul>
                 </div>))
+                
         )
     )
 }
+
+Font.register({ 
+    family: 'Great Vibes', 
+    src: "https://4geeks-academy-main.s3-us-west-2.amazonaws.com/fonts/GreatVibes-Regular.ttf", 
+});
 
 
 const styles = StyleSheet.create({
@@ -416,11 +417,14 @@ const styles = StyleSheet.create({
         width: '100%'
 
     },
-
+    signature:{
+      fontFamily:"Great Vibes",
+      fontSize:30,
+      letterSpacing:3,
+    },
     last_name: {
         fontFamily: "Helvetica-Bold",
         fontWeight: "heavy"
-
     },
     recognizes: {
         fontFamily: "Helvetica-Bold",
@@ -429,7 +433,6 @@ const styles = StyleSheet.create({
     },
     bold: {
         fontFamily: "Helvetica-Bold",
-
     },
     colorDash: {
         color: "#44B2E4",
@@ -473,7 +476,7 @@ const styles = StyleSheet.create({
         // padding: "5px",
         display: "flex",
         flexDirection: "row",
-        height: "290px",
+        height: "280px",
         width: "100%"
     },
     thirdRowFirstColumnModern: {
@@ -498,17 +501,18 @@ const styles = StyleSheet.create({
         width: "34%"
     },
     thirdColumn: {
-        width: "31%"
+        width: "31%",
     },
     image: {
         textaAlign: "center",
         margin: "auto",
-        padding: "30px"
+        padding: "10px",
+        paddingTop:"60px"
     },
     thirdRow: {
         display: "flex",
         flexDirection: "row",
-        height: "125px"
+        height: "135px"
     },
     thirdRowModern: {
         display: "flex",
@@ -539,12 +543,15 @@ const styles = StyleSheet.create({
     {
         width: "96%",
         backgroundColor: "white",
-        height: "15px"
+        height: "30px",
+        textaAlign:"center",
+        paddingLeft: 200,
+        fontSize: 9
     },
     printTopRowColumnRight:
     {
         width: "2%",
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
     printBottomRow:
     {
@@ -720,3 +727,10 @@ const GraduationDate = styled.Text`
   margin:3px 0px;
   font-size:10px
 `;
+
+const Signature = styled.Text`
+  position: absolute;
+  bottom:20
+  left:30
+  right:30
+`

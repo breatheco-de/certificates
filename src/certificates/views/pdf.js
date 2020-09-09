@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import {Diploma} from "../diploma/Diploma";
 import {  Notify, Notifier } from "bc-react-notifier";
 
-const Certificate = () => {
+const Certificate = ({match}) => {
     function getUrlParameter(name) {
         var params = new URLSearchParams(window.location.search);
         return params.has(name) ? params.get(name) : null;
     }
-    const [token] = useState(getUrlParameter("token"));
+    const [token] = useState(match.params.token);
     const [lang] = useState(getUrlParameter("lang"));
     const [certificateStyle] = useState(getUrlParameter("style"))
     const [data, setData] = useState(null);
@@ -25,7 +25,7 @@ const Certificate = () => {
                 setData(data);
             }
         })
-        .catch(error => Notify.error(error.message || "there was a problem")); 
+        .catch(error => Notify.error(error.message || "There was a problem")); 
         } else Notify.error("Specify a token");
     },[])
 
