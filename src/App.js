@@ -1,14 +1,15 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Certificate from "./certificates/views/pdf";
+import Certificate from "./views/pdf";
 import {  Notify, Notifier } from "bc-react-notifier";
+import NoToken from "./views/NoToken"
 
 const App = () => {
-    Notify.error("Page not found")
+    
     return <Router>
               <Switch>
                   <Route exact path="/pdf/:token" component={Certificate}/>
-                  <Route render={() => <Notifier />} />
+                  <Route component={NoToken} />
               </Switch>
            </Router>
 }
