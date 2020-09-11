@@ -4,16 +4,11 @@
     {
       "src": "package.json",
       "use": "@now/static-build",
-      "config": { "distDir": "public" }
+      "config": { "distDir": "build" }
     }
   ],
   
   "routes": [
-    {
-      "src":"/.*bundle.js$",
-      "headers": { "cache-control": "s-maxage=31536000,immutable" },
-      "dest":"/bundle.js"
-    },
     {
       "src":"/(.+)\\.([a-zA-Z]{2,4})$",
       "headers": { "cache-control": "s-maxage=31536000,immutable" },
