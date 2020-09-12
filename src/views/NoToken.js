@@ -13,6 +13,9 @@ const NoToken = () => {
             }}>
                 <Input type="text" required onChange={(e) => setToken(e.target.value)} placeholder="Certificate token" />
                 <Button>Get certificate</Button>
+                <Button type="button" onClick={() => {
+                    if(token.length > 0)  window.location.href="/preview/"+token;
+                }}>Get HTML</Button>
             </form>
         </Jumbo>
     </Container>
