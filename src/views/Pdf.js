@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Diploma} from "../diploma/Diploma";
 import {  Notify, Notifier } from "bc-react-notifier";
+import {  PDFViewer } from '@react-pdf/renderer';
 
 const Certificate = ({match}) => {
     function getUrlParameter(name) {
@@ -30,7 +31,8 @@ const Certificate = ({match}) => {
     },[])
 
     return <>
-        { data !== null ? <Diploma 
+        { data !== null ?
+            <Diploma 
                  student={data.user}
                  specialty={data.specialty}
                  academy={data.academy}
@@ -41,7 +43,8 @@ const Certificate = ({match}) => {
                  token={token}
                  certificateStyle={certificateStyle}
                  created_at={data.created_at}
-                 /> : <Notifier />
+                 />
+                  : <Notifier />
         }
         
     </>
