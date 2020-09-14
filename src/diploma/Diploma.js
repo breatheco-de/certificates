@@ -13,7 +13,7 @@ import es from "./es";
 let studentNameMarginLeft = "220px";
 let studentNamePaddingTop = "0px";
 export const Diploma = (props) => {
-    const { signed_by, signed_by_role, student, cohort, academy, specialty, lang, token, certificateStyle, created_at } = props;
+    const { signed_by, signed_by_role, student, cohort, academy, specialty, lang, token, certificateStyle, created_at, size } = props;
     const certSt = certificateStyle || "default";
     const date = dayjs(created_at).locale(lang || "en").format("DD MMMM YYYY");
     let translation = en;
@@ -25,9 +25,9 @@ export const Diploma = (props) => {
             <Spinner size={120} spinnerColor={"#44B2E4"} spinnerWidth={2} visible={true} />
         </div>
         : (certSt === "default"
-            ? (<div><PDFViewer height="1000px" width="1620px">
+            ? (<div><PDFViewer height={size ? size.height : "1000px"} width={size ? size.width : "1620px"}>
                 <Document>
-                    <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
+                    <Page {...props}  size="A4" orientation="landscape" style={styles.pageSet} >
 
                         {/*Here is the first white row */}
 
