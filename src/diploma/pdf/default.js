@@ -127,7 +127,7 @@ const Diploma = (props) => {
                         </Hours>
                         <NameOfCohort>
                             <Text>
-                                {"4Geeks Academy Madrid"}
+                                {academy.name}
                             </Text>
                         </NameOfCohort>
                         <GraduationDate>
