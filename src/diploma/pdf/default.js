@@ -4,7 +4,7 @@ import styled from "@react-pdf/styled-components";
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/es';
 
-let studentNameMarginLeft = "240px";
+let studentNameMarginLeft = "265px";
 let studentNamePaddingTop = "0px";
 
 const Diploma = (props) => {
