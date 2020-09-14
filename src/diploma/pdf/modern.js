@@ -10,7 +10,7 @@ let studentNameMarginLeft = "220px";
 let studentNamePaddingTop = "0px";
 const Diploma = (props) => {
     const { signed_by, signed_by_role, student, strings, academy, specialty, lang, created_at } = props;
-    return <PDFViewer height="1000px" width="1620px">
+    return <PDFViewer height="1000px" width="100%">
             <Document>
                 <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 

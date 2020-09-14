@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 //import Certificate from './App';
 import * as serviceWorker from './serviceWorker';
 //import Certificate from "./certificates/views/pdf";

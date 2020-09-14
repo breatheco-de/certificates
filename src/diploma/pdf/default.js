@@ -4,12 +4,13 @@ import styled from "@react-pdf/styled-components";
 import * as dayjs from 'dayjs';
 import 'dayjs/locale/es';
 
-let studentNameMarginLeft = "220px";
+let studentNameMarginLeft = "265px";
 let studentNamePaddingTop = "0px";
 
 const Diploma = (props) => {
     const { signed_by, signed_by_role, student, academy, specialty, strings, lang, token, certificateStyle, created_at } = props;
-    return <PDFViewer height="1000px" width="1620px">
+    console.log(signed_by.length)
+    return <PDFViewer height="1000px" width="100%">
         <Document>
             <Page {...props} size="A4" orientation="landscape" style={styles.pageSet}>
 
@@ -75,7 +76,7 @@ const Diploma = (props) => {
                         {
                             (student
                                 ? (student.first_name && student.last_name
-                                    ? (student.first_name.length < 6 && student.last_name.length < 6
+                                    ? (student.first_name.length < 3 && student.last_name.length < 3
                                         ? (<View><FirstNameShortVersion>
                                             <Text style={styles.first_name}>&lt;/{student.first_name}</Text>
                                         </FirstNameShortVersion>
@@ -126,7 +127,7 @@ const Diploma = (props) => {
                         </Hours>
                         <NameOfCohort>
                             <Text>
-                                {"4Geeks Academy Madrid"}
+                                {academy.name}
                             </Text>
                         </NameOfCohort>
                         <GraduationDate>
@@ -149,10 +150,10 @@ const Diploma = (props) => {
                     <View style={styles.secondColumn}>
                     </View>
                     <View style={styles.thirdColumn}>
-                        <View style={styles.textLeft}>
                             <Signature>
                                 <Text style={styles.signature}>{signed_by}</Text>  
                             </Signature>
+                        <View style={styles.textLeft}>
                             <SignatureDash>
                                 <Text> ___________________ </Text>
                             </SignatureDash>
@@ -435,10 +436,9 @@ const LeadInstructor = styled.Text`
 `;
 const RecognizesThat = styled.Text`
   margin-top:50px;
-  margin-left:270px;
+  margin-left:350px;
   font-size:12px;
   font-weight: bold;
-
   color:#44B2E4;
 `;
 const FirstName = styled.Text`
@@ -461,7 +461,7 @@ const SingleNameVersion = styled.Text`
 const LastName = styled.Text`
   font-size:50px;
   color:black;
-  margin-left:360px;
+  margin-left:390px;
   font-weight:900;
   margin-bottom:0px;
   padding-bottom:0px;
@@ -470,7 +470,7 @@ const FirstNameShortVersion = styled.Text`
   font-weight:100
   font-size:50px;
   color:black;
-  margin-left:220px;
+  margin-left:300px;
   paddingTop:${studentNamePaddingTop};
   margin-bottom:0px;
   padding-bottom:0px;
@@ -516,7 +516,8 @@ const GraduationDate = styled.Text`
 
 const Signature = styled.Text`
   position: absolute;
-  bottom:20
-  left:30
+  bottom:60
+  left:15
   right:30
+  width: 300px;
 `
