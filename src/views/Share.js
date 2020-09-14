@@ -55,7 +55,8 @@ const Share = ({ match }) => {
                     }
                 </div>
             </div>
-            <div className="row pt-4 pb-4">
+            <div className="container">
+             <div className="row pt-4 pb-4">
                 <div className="col-md-4 col-12">
                     <div className="row pb-2">
                         <div className="col-12">
@@ -131,7 +132,8 @@ const Share = ({ match }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>   
+        </div>
         </div>
     )
 }

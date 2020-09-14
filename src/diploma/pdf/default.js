@@ -8,13 +8,6 @@ let studentNameMarginLeft = "240px";
 let studentNamePaddingTop = "0px";
 
 const Diploma = (props) => {
-    const stripJumps = (s) => {
-    if (s === undefined || s === null) {
-      return s
-    } else {
-      return s.split('').map(l => l.charCodeAt(0) === 32 ? "" : l).join('')
-    }
-  }
     const { signed_by, signed_by_role, student, academy, specialty, strings, lang, token, certificateStyle, created_at } = props;
     console.log(signed_by.length)
     return <PDFViewer height="1000px" width="100%">
@@ -443,10 +436,9 @@ const LeadInstructor = styled.Text`
 `;
 const RecognizesThat = styled.Text`
   margin-top:50px;
-  margin-left:270px;
+  margin-left:350px;
   font-size:12px;
   font-weight: bold;
-
   color:#44B2E4;
 `;
 const FirstName = styled.Text`
